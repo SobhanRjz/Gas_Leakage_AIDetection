@@ -1,0 +1,145 @@
+.header {
+  background-color: #0b1a2d;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.header.scrolled {
+  background-color: rgba(11, 26, 45, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-right: 2rem;
+}
+
+.logo-image {
+  height: 48px;
+  width: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-link {
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  position: relative;
+  color: #d0d7e0;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.nav-link:hover::after {
+  width: 80%;
+}
+
+.nav-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.nav-button:hover {
+  background-color: var(--primary-dark);
+}
+
+.login-link {
+  background-color: var(--primary-color);
+  color: white !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.login-link:hover {
+  background-color: var(--primary-dark);
+  color: white !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    padding: 0 1rem;
+  }
+
+  .logo {
+    margin-right: 1rem;
+  }
+
+  .logo-image {
+    height: 36px;
+    width: 36px;
+  }
+
+  .nav {
+    gap: 0.25rem;
+  }
+
+  .nav-link {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .nav-link::after {
+    height: 1.5px;
+  }
+
+  .login-link {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem;
+  }
+
+  .nav-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+}
