@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
           <p>Sign in to access the pipeline monitoring system</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} className="login-form" noValidate>
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
@@ -52,6 +52,7 @@ const LoginPage: React.FC = () => {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
               required
+              aria-describedby={error ? "error-message" : undefined}
             />
           </div>
 
@@ -64,15 +65,26 @@ const LoginPage: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
+              aria-describedby={error ? "error-message" : undefined}
             />
           </div>
 
-          {error && <div className="error-message">{error}</div>}
+          {error && (
+            <div
+              id="error-message"
+              className="error-message"
+              role="alert"
+              aria-live="polite"
+            >
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"
             className="login-button"
             disabled={loading}
+            aria-describedby={error ? "error-message" : undefined}
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>

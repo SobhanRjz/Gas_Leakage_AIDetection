@@ -5,6 +5,7 @@ import Layout from './components/Layout'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import OverviewPage from './pages/OverviewPage'
+import ReportPage from './pages/ReportPage'
 
 /**
  * Main application component with routing configuration
@@ -18,6 +19,7 @@ const App: React.FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/overview" element={<OverviewPage />} />
+            <Route path="/reports" element={<ReportPage />} />
           </Routes>
         </Layout>
       </Router>

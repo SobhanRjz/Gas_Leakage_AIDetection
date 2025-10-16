@@ -38,6 +38,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
       <div className="header-container">
         <Link to="/" className="logo">
           <img src="/Logo.jpg" alt="Gas Pipeline Monitor" className="logo-image" />
+          <span className="logo-text">Pipeline Monitor</span>
         </Link>
         <nav className="nav">
           <a href="#features" className="nav-link">
@@ -56,6 +57,9 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
             <>
               <Link to="/overview" className="nav-link">
                 Overview
+              </Link>
+              <Link to="/reports" className="nav-link">
+                Reports
               </Link>
               <button onClick={handleLogout} className="nav-button">
                 Logout

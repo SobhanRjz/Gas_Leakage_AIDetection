@@ -1,5 +1,5 @@
 .login-page {
-  min-height: calc(100vh - 64px);
+  min-height: 105vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,7 +13,7 @@
   border-radius: 1rem;
   box-shadow: var(--shadow-lg);
   width: 100%;
-  max-width: 400px;
+  max-width: 480px;
 }
 
 .login-header {
@@ -51,15 +51,17 @@
 
 .form-group input {
   padding: 0.75rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   font-size: 1rem;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .form-group input:focus {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  outline: none;
 }
 
 .error-message {

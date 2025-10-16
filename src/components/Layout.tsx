@@ -22,6 +22,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <main className="main-content">
         {children}
       </main>
+      <footer className="footer">
+        <div className="footer-container">
+          <p>&copy; 2025 Pipeline Monitoring System</p>
+        </div>
+      </footer>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 .header {
-  background-color: #0b1a2d;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   color: #fff;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
@@ -12,7 +12,7 @@
 }
 
 .header.scrolled {
-  background-color: rgba(11, 26, 45, 0.9);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
@@ -39,6 +39,13 @@
   width: 48px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin-left: 0.75rem;
 }
 
 .nav {
@@ -118,6 +125,11 @@
   .logo-image {
     height: 36px;
     width: 36px;
+  }
+
+  .logo-text {
+    font-size: 1rem;
+    margin-left: 0.5rem;
   }
 
   .nav {
