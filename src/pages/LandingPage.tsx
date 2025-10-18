@@ -8,39 +8,38 @@ import './LandingPage.css'
 const LandingPage: React.FC = () => {
   return (
     <div className="landing-page">
+      {/* Fullscreen background image */}
+      <img
+        className="hero-bg"
+        src="/images/hero-pipeline.jpg"
+        alt=""
+        loading="eager"
+        fetchPriority="high"
+        srcSet="/images/hero-pipeline-1200.jpg 1200w,
+                /images/hero-pipeline-1600.jpg 1600w,
+                /images/hero-pipeline-2000.jpg 2000w"
+        sizes="(min-width:1440px) 1440px, 100vw"
+      />
       <div className="hero-section">
-        <h1 className="hero-title">
-          Intelligent Gas Pipeline<br />
-          Monitoring System
-        </h1>
-        <p className="hero-subtitle">
-          Real-time detection, analytics, and alerting for pipeline safety.
-        </p>
-        <div className="hero-actions">
-          <Link to="/login" className="cta-button primary">
-            Get Started
-          </Link>
-          <button className="cta-button secondary">
-            Watch Demo
-          </button>
-        </div>
-      </div>
-
-      <div id="features" className="features-section">
-        <div className="feature-card" style={{ '--card-index': 0 } as React.CSSProperties}>
-          <div className="feature-icon">🔍</div>
-          <h3>Real-time Monitoring</h3>
-          <p>Continuous surveillance of pipeline conditions</p>
-        </div>
-        <div className="feature-card" style={{ '--card-index': 1 } as React.CSSProperties}>
-          <div className="feature-icon">⚡</div>
-          <h3>Instant Alerts</h3>
-          <p>Immediate notifications on detected anomalies</p>
-        </div>
-        <div className="feature-card" style={{ '--card-index': 2 } as React.CSSProperties}>
-          <div className="feature-icon">📊</div>
-          <h3>Analytics Dashboard</h3>
-          <p>Comprehensive data analysis and reporting</p>
+        <div className="hero-content">
+          <h1 className="hero-title">
+            Intelligent Gas Pipeline<br />
+            Monitoring System
+          </h1>
+          <p className="hero-subtitle">
+            Real-time detection, analytics, and alerting for pipeline safety.
+          </p>
+          <div className="cta-row">
+            <Link to="/login" className="cta-primary">
+              Get Started
+            </Link>
+            <button className="cta-secondary">
+              ▶ Watch Demo
+            </button>
+          </div>
+          <div className="trust-note">
+            No credit card required • Free 14-day trial
+          </div>
         </div>
       </div>
     </div>

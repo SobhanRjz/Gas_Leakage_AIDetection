@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './services/AuthService'
+import { ThemeProvider } from './components/Header'
 import Layout from './components/Layout'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
@@ -12,18 +13,20 @@ import ReportPage from './pages/ReportPage'
  */
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/overview" element={<OverviewPage />} />
-            <Route path="/reports" element={<ReportPage />} />
-          </Routes>
-        </Layout>
-      </Router>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/overview" element={<OverviewPage />} />
+              <Route path="/reports" element={<ReportPage />} />
+            </Routes>
+          </Layout>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 

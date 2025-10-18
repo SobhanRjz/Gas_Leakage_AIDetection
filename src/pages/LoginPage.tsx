@@ -12,11 +12,16 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  // Form validation
+  const isFormValid = username.trim() !== '' && password.trim() !== ''
+
   const { authService } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!isFormValid) return
+
     setError('')
     setLoading(true)
 
@@ -34,8 +39,29 @@ const LoginPage: React.FC = () => {
     }
   }
 
+  // Copy demo credentials to clipboard
+  const copyDemoCredentials = async () => {
+    const credentials = 'admin / password'
+    try {
+      await navigator.clipboard.writeText(credentials)
+      // Optional: Show a brief success message
+      console.log('Demo credentials copied to clipboard')
+    } catch (err) {
+      // Fallback: select the text
+      console.log('Copy failed, credentials:', credentials)
+    }
+  }
+
   return (
     <div className="login-page">
+      {/* Fullscreen background image */}
+      <img
+        className="login-bg"
+        src="/images/login.jpg"
+        alt=""
+        loading="eager"
+        fetchPriority="high"
+      />
       <div className="login-container">
         <div className="login-header">
           <h1>Welcome Back</h1>
@@ -83,7 +109,7 @@ const LoginPage: React.FC = () => {
           <button
             type="submit"
             className="login-button"
-            disabled={loading}
+            disabled={loading || !isFormValid}
             aria-describedby={error ? "error-message" : undefined}
           >
             {loading ? 'Signing in...' : 'Sign In'}
@@ -91,7 +117,14 @@ const LoginPage: React.FC = () => {
         </form>
 
         <div className="login-footer">
-          <p>Demo credentials: admin / password</p>
+          <button
+            type="button"
+            className="demo-credentials-chip"
+            onClick={copyDemoCredentials}
+            title="Click to copy demo credentials"
+          >
+            Demo: admin / password
+          </button>
         </div>
       </div>
     </div>
