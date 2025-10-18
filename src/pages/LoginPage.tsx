@@ -4,7 +4,7 @@ import { useAuth } from '../services/AuthService'
 import './LoginPage.css'
 
 // Path resolution that works in both development and production
-const getImagePath = (filename: string) => `/images/${filename}`
+const getImagePath = (filename: string) => `/Gas_Leakage_AIDetection/images/${filename}`
 
 /**
  * Login page component
@@ -63,7 +63,7 @@ const LoginPage: React.FC = () => {
         src={getImagePath('login.jpg')}
         alt=""
         loading="eager"
-        fetchPriority="high"
+        {...{ fetchpriority: "high" } as any}
       />
       <div className="login-container">
         <div className="login-header">
