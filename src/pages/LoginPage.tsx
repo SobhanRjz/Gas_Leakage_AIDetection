@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../services/AuthService'
 import './LoginPage.css'
 
+// Path resolution that works in both development and production
+const getImagePath = (filename: string) => `/images/${filename}`
+
 /**
  * Login page component
  */
@@ -57,7 +60,7 @@ const LoginPage: React.FC = () => {
       {/* Fullscreen background image */}
       <img
         className="login-bg"
-        src="/images/login.jpg"
+        src={getImagePath('login.jpg')}
         alt=""
         loading="eager"
         fetchPriority="high"

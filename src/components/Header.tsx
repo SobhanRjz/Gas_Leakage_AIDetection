@@ -63,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
       <div className="header-container modern">
         {/* Left: Brand */}
         <Link to="/" className="brand">
-          <img src="/Logo.jpg" alt="Gas Pipeline Monitor" />
+          <img src="/Gas_Leakage_AIDetection/Logo.jpg" alt="Gas Pipeline Monitor" />
           <span className="brand-name">Pipeline Monitor</span>
         </Link>
 

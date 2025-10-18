@@ -15,7 +15,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Router>
+        <Router basename="/Gas_Leakage_AIDetection">
           <Layout>
             <Routes>
               <Route path="/" element={<LandingPage />} />

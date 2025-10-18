@@ -2,6 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import './LandingPage.css'
 
+// Path resolution that works in both development and production
+const getImagePath = (filename: string) => `/Gas_Leakage_AIDetection/images/${filename}`
+
 /**
  * Landing page component
  */
@@ -11,13 +14,13 @@ const LandingPage: React.FC = () => {
       {/* Fullscreen background image */}
       <img
         className="hero-bg"
-        src="/images/hero-pipeline.jpg"
+        src={getImagePath('hero-pipeline.jpg')}
         alt=""
         loading="eager"
-        fetchPriority="high"
-        srcSet="/images/hero-pipeline-1200.jpg 1200w,
-                /images/hero-pipeline-1600.jpg 1600w,
-                /images/hero-pipeline-2000.jpg 2000w"
+        {...{ fetchpriority: "high" } as any}
+        srcSet={`${getImagePath('hero-pipeline-1200.jpg')} 1200w,
+                ${getImagePath('hero-pipeline-1600.jpg')} 1600w,
+                ${getImagePath('hero-pipeline-2000.jpg')} 2000w`}
         sizes="(min-width:1440px) 1440px, 100vw"
       />
       <div className="hero-section">
