@@ -23,6 +23,17 @@ interface HeaderProps {
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
 
+  // Apply theme class to document body
+  React.useEffect(() => {
+    if (isDarkTheme) {
+      document.body.classList.add('theme-dark');
+      document.body.classList.remove('theme-light');
+    } else {
+      document.body.classList.add('theme-light');
+      document.body.classList.remove('theme-dark');
+    }
+  }, [isDarkTheme]);
+
   return (
     <ThemeContext.Provider value={{ isDarkTheme, setIsDarkTheme }}>
       {children}

@@ -5,590 +5,212 @@
 /* Import base theme variables from OverviewPage */
 @import './OverviewPage.css';
 
+/* Import modular CSS files */
+@import './ReportPage.Layout.css';
+@import './ReportPage.Components.css';
+@import './ReportPage.Responsive.css';
+
+/* =================================================================
+   HARMONIZED TYPOGRAPHY SYSTEM
+   ================================================================= */
+
 .report-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-  color: var(--industrial-text-primary);
-  font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  padding: 1.5rem;
-  max-width: 100%;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-/* =================================================================
-   REPORT CONFIGURATION
-   ================================================================= */
-
-.config-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.config-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.config-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--industrial-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.config-select {
-  background: var(--industrial-surface);
-  border: 1px solid var(--industrial-border);
-  color: var(--industrial-text-primary);
-  padding: 0.75rem 1rem;
-  border-radius: 0.375rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: inherit;
-}
-
-.config-select:hover {
-  border-color: var(--industrial-accent);
-}
-
-.config-select:focus {
-  outline: none;
-  border-color: var(--industrial-accent);
-  box-shadow: 0 0 0 3px var(--industrial-accent-dim);
-}
-
-.export-buttons {
-  display: flex;
-  gap: 0.625rem;
-}
-
-.export-btn {
-  flex: 1;
-  background: var(--industrial-surface);
-  border: 1px solid var(--industrial-border);
-  color: var(--industrial-text-primary);
-  padding: 0.75rem 1rem;
-  border-radius: 0.375rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.export-btn:hover {
-  background: var(--industrial-accent);
-  color: var(--industrial-dark);
-  border-color: var(--industrial-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-/* =================================================================
-   REPORT CONTENT LAYOUT
-   ================================================================= */
-
-.report-content-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-/* =================================================================
-   METRICS GRID
-   ================================================================= */
-
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.metric-card {
-  background: linear-gradient(135deg, var(--panel-gradient-start) 0%, var(--panel-gradient-end) 100%);
-  border: 1px solid var(--industrial-border);
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.metric-card:hover {
-  border-color: var(--industrial-accent);
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px var(--shadow-color);
-}
-
-.metric-icon {
-  font-size: 2rem;
-  filter: grayscale(0.2);
-}
-
-.metric-data {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.metric-value {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--industrial-text-primary);
-  line-height: 1;
-}
-
-.metric-value.critical {
-  color: var(--status-critical);
-}
-
-.metric-value.success {
-  color: var(--status-success);
-}
-
-.metric-label {
-  font-size: 0.75rem;
-  color: var(--industrial-text-secondary);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-/* =================================================================
-   DEFECTS BAR CHART
-   ================================================================= */
-
-.defect-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.defect-bar-item {
-  display: grid;
-  grid-template-columns: 200px 1fr auto;
-  gap: 1rem;
-  align-items: center;
-}
-
-.defect-bar-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.defect-type {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--industrial-text-primary);
-}
-
-.defect-count {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--industrial-text-secondary);
-}
-
-.defect-bar-track {
-  height: 24px;
-  background: var(--industrial-surface);
-  border: 1px solid var(--industrial-border);
-  border-radius: 0.375rem;
-  overflow: hidden;
-  position: relative;
-}
-
-.defect-bar-fill {
-  height: 100%;
-  background: var(--industrial-accent);
-  border-radius: 0.25rem;
-  transition: width 0.6s ease;
-  position: relative;
-}
-
-.defect-bar-fill.critical {
-  background: linear-gradient(90deg, var(--status-critical) 0%, #dc2626 100%);
-}
-
-.defect-bar-fill.warning {
-  background: linear-gradient(90deg, var(--status-warning) 0%, #d97706 100%);
-}
-
-.defect-bar-fill.info {
-  background: linear-gradient(90deg, var(--status-operational) 0%, #0284c7 100%);
-}
-
-.defect-percentage {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--industrial-text-secondary);
-  min-width: 50px;
-  text-align: right;
-}
-
-/* =================================================================
-   DATA TABLE
-   ================================================================= */
-
-.data-table-container {
-  overflow-x: auto;
-  border-radius: 0.375rem;
-  border: 1px solid var(--industrial-border);
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--industrial-surface);
-}
-
-.data-table thead {
-  background: var(--industrial-panel);
-  border-bottom: 2px solid var(--industrial-border);
-}
-
-.data-table th {
-  padding: 1rem 1.25rem;
-  text-align: left;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--industrial-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.data-table tbody tr {
-  border-bottom: 1px solid var(--industrial-border);
-  transition: all 0.2s ease;
-}
-
-.data-table tbody tr:hover {
-  background: var(--industrial-panel);
-}
-
-.data-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.data-table td {
-  padding: 1rem 1.25rem;
-  font-size: 0.875rem;
-  color: var(--industrial-text-primary);
-}
-
-.id-badge {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--industrial-accent);
-  background: var(--industrial-accent-dim);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-}
-
-.severity-badge {
-  font-size: 0.625rem;
-  font-weight: 700;
-  padding: 0.25rem 0.625rem;
-  border-radius: 0.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.severity-badge.critical {
-  background: rgba(239, 68, 68, 0.15);
-  color: var(--status-critical);
-}
-
-.severity-badge.warning {
-  background: rgba(245, 158, 11, 0.15);
-  color: var(--status-warning);
-}
-
-.severity-badge.info {
-  background: rgba(14, 165, 233, 0.15);
-  color: var(--status-operational);
-}
-
-.status-badge {
-  font-size: 0.625rem;
-  font-weight: 700;
-  padding: 0.25rem 0.625rem;
-  border-radius: 0.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.status-badge.pending {
-  background: rgba(245, 158, 11, 0.15);
-  color: var(--status-warning);
-}
-
-.status-badge.progress {
-  background: rgba(14, 165, 233, 0.15);
-  color: var(--status-operational);
-}
-
-.status-badge.resolved {
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--status-success);
-}
-
-/* =================================================================
-   DETAILED GRID
-   ================================================================= */
-
-.detailed-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.detail-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.detail-section h4 {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--industrial-text-primary);
-  margin: 0;
-}
-
-.detail-section p {
-  font-size: 0.875rem;
-  color: var(--industrial-text-secondary);
+  font-weight: 400;
   line-height: 1.5;
-  margin: 0;
+  color: var(--color-text-primary);
 }
 
-.detail-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-.detail-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.75rem;
-  background: var(--industrial-surface);
-  border: 1px solid var(--industrial-border);
-  border-radius: 0.375rem;
-}
-
-.detail-label {
-  font-size: 0.625rem;
-  color: var(--industrial-text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 500;
-}
-
-.detail-value {
-  font-family: 'Roboto Mono', monospace;
+/* Title Hierarchy - H1 */
+.report-page h1,
+.report-page-title {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--industrial-text-primary);
-  line-height: 1;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  margin: 0 0 1.5rem 0;
 }
 
-.detail-value.critical {
-  color: var(--status-critical);
-}
-
-.detail-value.warning {
-  color: var(--status-warning);
-}
-
-/* =================================================================
-   MAINTENANCE TIMELINE
-   ================================================================= */
-
-.maintenance-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.timeline-item {
-  display: flex;
-  gap: 1rem;
-  position: relative;
-}
-
-.timeline-item:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: 11px;
-  top: 32px;
-  bottom: -24px;
-  width: 2px;
-  background: var(--industrial-border);
-}
-
-.timeline-marker {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 3px solid var(--industrial-border);
-  background: var(--industrial-surface);
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.timeline-marker.upcoming {
-  border-color: var(--status-operational);
-  background: var(--status-operational);
-}
-
-.timeline-marker.completed {
-  border-color: var(--status-success);
-  background: var(--status-success);
-}
-
-.timeline-content {
-  flex: 1;
-  background: var(--industrial-surface);
-  border: 1px solid var(--industrial-border);
-  border-radius: 0.375rem;
-  padding: 1rem;
-  transition: all 0.3s ease;
-}
-
-.timeline-content:hover {
-  background: var(--industrial-panel);
-  border-color: var(--industrial-accent);
-  transform: translateX(4px);
-  box-shadow: 0 2px 8px var(--shadow-color);
-}
-
-.timeline-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.5rem;
-}
-
+/* Section Headers */
+.panel-title,
+.config-section-title,
+.accordion-header-title,
+.legend-title,
 .timeline-header h4 {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--industrial-text-primary);
-  margin: 0;
-}
-
-.timeline-date {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--industrial-text-secondary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1rem;
   font-weight: 600;
-}
-
-.timeline-content p {
-  font-size: 0.875rem;
-  color: var(--industrial-text-secondary);
-  line-height: 1.5;
+  line-height: 1.3;
+  color: var(--color-text-primary);
   margin: 0 0 0.75rem 0;
 }
 
-.timeline-meta {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
+/* Body Text */
+.report-page p,
+.report-page span,
+.filter-tag,
+.system-chip,
+.search-input,
+.enhanced-select,
+.segmented-option,
+.toggle-text,
+.toast-content,
+.item-main .sign-text {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text-primary);
 }
 
-.timeline-tag {
-  font-size: 0.625rem;
-  font-weight: 700;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: var(--industrial-accent-dim);
-  color: var(--industrial-accent);
-}
-
-.timeline-tag.completed {
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--status-success);
-}
-
-.timeline-duration {
+/* Data and Numbers - Roboto Mono */
+.id-badge,
+.metric-value,
+.metric-label,
+.accordion-count,
+.defect-count,
+.defect-percentage,
+.timeline-date,
+.last-seen,
+.region-asset,
+.meta-right,
+.detail-value,
+.detail-label {
+  font-family: 'Roboto Mono', monospace;
   font-size: 0.75rem;
-  color: var(--industrial-text-dim);
   font-weight: 500;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
 }
 
-/* =================================================================
-   RESPONSIVE DESIGN
-   ================================================================= */
+/* ===== Light Theme Tokens (high contrast, WCAG-friendly) ===== */
+.report-page.theme-light {
+  /* Surfaces */
+  --app-background: #F6F8FB;              /* page background */
+  --color-surface: #F9FAFB;               /* subtle strips, alt rows */
+  --color-card: #FFFFFF;                   /* cards/panels */
+  --raised-card-background: rgba(255,255,255,0.9);
 
-@media (max-width: 1400px) {
-  .metrics-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .config-grid {
-    grid-template-columns: 1fr;
-  }
+  /* Borders & shadows */
+  --color-border: #E5E7EB;                /* default border */
+  --color-border-subtle: #EEF2F7;         /* inner separators */
+  --shadow-color: rgba(2, 6, 23, 0.08);
+  --shadow-sm: 0 1px 2px var(--shadow-color);
+  --shadow-md: 0 2px 10px var(--shadow-color);
+  --shadow-lg: 0 10px 24px var(--shadow-color);
 
-  .detailed-grid {
-    grid-template-columns: 1fr;
-  }
+  /* Text */
+  --color-text-primary: #0F172A;          /* slate-900 */
+  --color-text-secondary: #334155;        /* slate-700 */
+  --color-text-muted: #64748B;            /* slate-500 */
+
+  /* Brand */
+  --color-brand: #2563EB;                 /* primary */
+  --color-brand-hover: #1D4ED8;
+  --color-brand-subtle: #E8F0FF;          /* light tint for hovers/focus */
+
+  /* Status / severity */
+  --color-severity-major: #EF4444;        /* red-500 */
+  --color-severity-minor: #F59E0B;        /* amber-500 */
+  --color-severity-info:  #0EA5E9;        /* sky-500 */
+  --color-severity-healthy: #10B981;      /* emerald-500 */
+
+  /* Metrics/gradients used by .metric-card etc. */
+  --panel-gradient-start: #FFFFFF;
+  --panel-gradient-end: #F9FAFB;
+
+  /* Legacy industrial tokens (used in some components) */
+  --industrial-surface: #FFFFFF;
+  --industrial-panel: #F9FAFB;
+  --industrial-border: #E5E7EB;
+  --industrial-accent: #2563EB;
+  --industrial-accent-dim: #E8F0FF;
+  --industrial-text-primary: #0F172A;
+  --industrial-text-secondary: #475569;
+  --industrial-text-dim: #64748B;
+
+  /* Badges in legend */
+  --badge-pt: #3B82F6;        /* blue */
+  --badge-ft: #10B981;        /* green */
+  --badge-tt: #F59E0B;        /* amber */
+  --badge-seismo: #8B5CF6;    /* violet */
 }
 
-@media (max-width: 1024px) {
-  .report-page {
-    padding: 1rem;
-  }
-  
-  .system-status-bar {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    text-align: center;
-  }
-  
-  .system-metrics {
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
+/* ===== Light Theme Specific Overrides ===== */
 
-  .defect-bar-item {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
+/* Make sticky header look like a real bar on light */
+.report-page.theme-light .report-sticky-header {
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  background: var(--raised-card-background);
 }
 
-@media (max-width: 768px) {
-  .metrics-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .data-table-container {
-    font-size: 0.75rem;
-  }
-  
-  .data-table th,
-  .data-table td {
-    padding: 0.75rem;
-  }
+/* Cards/panels */
+.report-page.theme-light .industrial-panel,
+.report-page.theme-light .results-summary-bar,
+.report-page.theme-light .bulk-actions,
+.report-page.theme-light .accordion-section {
+  background: var(--color-card);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-sm);
 }
+
+/* Alternating rows in accordion look too grey on light → keep subtle */
+.report-page.theme-light .accordion-item:nth-child(even) {
+  background: var(--color-surface);
+}
+
+/* Hover states should use a light brand tint, not dark grey */
+.report-page.theme-light .accordion-header:hover,
+.report-page.theme-light .accordion-item:hover,
+.report-page.theme-light .summary-chip:hover,
+.report-page.theme-light .filter-chip:hover,
+.report-page.theme-light .toolbar-action-btn:hover,
+.report-page.theme-light .system-chip:hover,
+.report-page.theme-light .sort-select:hover,
+.report-page.theme-light .enhanced-select:hover,
+.report-page.theme-light .search-input:hover {
+  background: var(--color-brand-subtle);
+  border-color: var(--color-brand);
+}
+
+/* Inputs and selects on white */
+.report-page.theme-light .enhanced-select,
+.report-page.theme-light .search-input,
+.report-page.theme-light .sort-select,
+.report-page.theme-light .segmented-control {
+  background: #FFFFFF;
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+/* Chips readability on white */
+.report-page.theme-light .filter-chip,
+.report-page.theme-light .summary-chip,
+.report-page.theme-light .system-chip {
+  background: #FFFFFF;
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+/* Tooltip bubbles for sensor badges should be light on light */
+.report-page.theme-light .sensor-badge[data-type]::after {
+  background: #FFFFFF;
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+/* Tables */
+.report-page.theme-light .data-table {
+  background: #FFFFFF;
+}
+.report-page.theme-light .data-table thead {
+  background: var(--color-surface);
+  border-bottom-color: var(--color-border);
+}
+.report-page.theme-light .data-table tbody tr:hover {
+  background: var(--color-brand-subtle);
+}
+

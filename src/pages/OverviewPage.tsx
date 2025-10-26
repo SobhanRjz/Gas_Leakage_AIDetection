@@ -29,10 +29,6 @@ const OverviewPage: React.FC = () => {
             <span className="metric-value">156/160</span>
           </div>
           <div className="metric-indicator">
-            <span className="metric-label">System Load</span>
-            <span className="metric-value">78%</span>
-          </div>
-          <div className="metric-indicator">
             <span className="metric-label">Last Update</span>
             <span className="metric-value">2s</span>
           </div>
@@ -80,7 +76,7 @@ const OverviewPage: React.FC = () => {
         </div>
 
         {/* Pipeline Pressure */}
-        <div className="kpi-panel warning">
+        {/* <div className="kpi-panel warning">
           <div className="kpi-header">
             <span className="kpi-icon">⚡</span>
             <span className="kpi-status-badge">Normal</span>
@@ -92,10 +88,10 @@ const OverviewPage: React.FC = () => {
           <svg className="kpi-trend" viewBox="0 0 100 32" preserveAspectRatio="none">
             <path d="M0 16 L20 18 L40 14 L60 20 L80 16 L100 18" stroke="#ffb020" strokeWidth="2" fill="none" opacity="0.5"/>
           </svg>
-        </div>
+        </div> */}
 
         {/* Flow Rate */}
-        <div className="kpi-panel operational">
+        {/* <div className="kpi-panel operational">
           <div className="kpi-header">
             <span className="kpi-icon">💧</span>
             <span className="kpi-status-badge">Stable</span>
@@ -107,7 +103,7 @@ const OverviewPage: React.FC = () => {
           <svg className="kpi-trend" viewBox="0 0 100 32" preserveAspectRatio="none">
             <path d="M0 18 L20 16 L40 17 L60 15 L80 16 L100 14" stroke="#00d4ff" strokeWidth="2" fill="none" opacity="0.5"/>
           </svg>
-        </div>
+        </div> */}
 
         {/* Sensor Network */}
         <div className="kpi-panel maintenance">
@@ -127,8 +123,9 @@ const OverviewPage: React.FC = () => {
 
       {/* Main Dashboard Layout */}
       <div className="dashboard-layout">
-        {/* Main Panel - Pipeline Map */}
+        {/* Main Panel - Pipeline Map and Alerts */}
         <div className="main-panel">
+          {/* Pipeline Network Monitor */}
           <div className="industrial-panel">
             <div className="panel-header">
               <h2 className="panel-title">Pipeline Network Monitor</h2>
@@ -164,15 +161,15 @@ const OverviewPage: React.FC = () => {
                     {/* Main Pipeline Network */}
                     <g className="pipeline-network">
                       {/* Main Line */}
-                      <path d="M100 200 Q200 180 300 200 T500 190 Q600 180 700 200" 
+                      <path d="M100 200 Q200 180 300 200 T500 190 Q600 180 700 200"
                             className="pipeline-segment" stroke="url(#pipeGrad)"/>
-                      
+
                       {/* Flow Animation */}
-                      <path d="M100 200 Q200 180 300 200 T500 190 Q600 180 700 200" 
+                      <path d="M100 200 Q200 180 300 200 T500 190 Q600 180 700 200"
                             className="pipeline-flow"/>
 
                       {/* Branch Line */}
-                      <path d="M300 200 Q350 250 400 280 L550 280" 
+                      <path d="M300 200 Q350 250 400 280 L550 280"
                             className="pipeline-segment" stroke="url(#pipeGrad)" opacity="0.7"/>
 
                       {/* Station A - Operational */}
@@ -223,11 +220,11 @@ const OverviewPage: React.FC = () => {
                       </g>
 
                       {/* Warning Leak 2 */}
-                      <g className="leak-marker warning" transform="translate(250,190)">
-                        <circle cx="0" cy="0" r="12" fill="#ffb020" opacity="0.2"/>
-                        <circle cx="0" cy="0" r="8" fill="#ffb020" opacity="0.5"/>
-                        <circle cx="0" cy="0" r="4" fill="#ffb020" filter="url(#leakGlow)"/>
-                        <text x="0" y="24" textAnchor="middle" fontSize="8" fill="#ffb020" fontWeight="bold">LEAK-2</text>
+                      <g className="leak-marker critical" transform="translate(250,190)">
+                        <circle cx="0" cy="0" r="12" fill="#ff4757" opacity="0.2"/>
+                        <circle cx="0" cy="0" r="8" fill="#ff4757" opacity="0.5"/>
+                        <circle cx="0" cy="0" r="4" fill="#ff4757" filter="url(#leakGlow)"/>
+                        <text x="0" y="24" textAnchor="middle" fontSize="8" fill="#ff4757" fontWeight="bold">LEAK-2</text>
                       </g>
 
                       {/* Critical Leak 3 */}
@@ -285,159 +282,173 @@ const OverviewPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Monitoring Statistics */}
-          <div className="stats-grid">
-            <div className="stat-panel">
-              <div className="stat-panel-header">
-                <div className="stat-icon-wrapper">📊</div>
-                <div className="stat-panel-title">Analysis Processed</div>
-              </div>
-              <div className="stat-main-value">2,847</div>
-              <div className="stat-breakdown">
-                <div className="breakdown-item">
-                  <span className="breakdown-label">Videos</span>
-                  <span className="breakdown-value">1,234</span>
+          {/* Bottom Section - Statistics and Alerts */}
+          <div className="main-panel-bottom">
+            {/* Monitoring Statistics */}
+            <div className="stats-grid">
+              <div className="stat-panel">
+                <div className="stat-panel-header">
+                  <div className="stat-icon-wrapper">📊</div>
+                  <div className="stat-panel-title">Analysis Processed</div>
                 </div>
-                <div className="breakdown-item">
-                  <span className="breakdown-label">Images</span>
-                  <span className="breakdown-value">1,613</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="stat-panel">
-              <div className="stat-panel-header">
-                <div className="stat-icon-wrapper">🔍</div>
-                <div className="stat-panel-title">Detections Found</div>
-              </div>
-              <div className="stat-main-value">47</div>
-              <div className="stat-breakdown">
-                <div className="breakdown-item">
-                  <span className="breakdown-label">Critical</span>
-                  <span className="breakdown-value critical">12</span>
-                </div>
-                <div className="breakdown-item">
-                  <span className="breakdown-label">Warning</span>
-                  <span className="breakdown-value warning">35</span>
+                <div className="stat-main-value">2,847</div>
+                <div className="stat-breakdown">
+                  <div className="breakdown-item">
+                    <span className="breakdown-label">Videos</span>
+                    <span className="breakdown-value">1,234</span>
+                  </div>
+                  <div className="breakdown-item">
+                    <span className="breakdown-label">Images</span>
+                    <span className="breakdown-value">1,613</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Side Panel - Alerts & Defects */}
-        <div className="side-panel">
-          {/* Active Alerts */}
-          <div className="industrial-panel">
-            <div className="panel-header">
-              <h2 className="panel-title">Active Alerts</h2>
-              <div className="panel-badge">3 NEW</div>
-            </div>
-            <div className="panel-content">
-              <div className="alerts-container">
-                <div className="alert-card critical">
-                  <div className="alert-header">
-                    <span className="alert-type">Pressure Drop</span>
-                    <span className="alert-severity">Critical</span>
-                  </div>
-                  <div className="alert-location">
-                    <span>📍</span>
-                    <span>Sector A-7, KM 125.3</span>
-                  </div>
-                  <div className="alert-description">
-                    Pressure dropped 15 PSI below operational threshold. Immediate inspection required.
-                  </div>
-                  <div className="alert-footer">
-                    <span className="alert-timestamp">02:15:34</span>
-                    <button className="alert-action">Investigate</button>
-                  </div>
+              <div className="stat-panel">
+                <div className="stat-panel-header">
+                  <div className="stat-icon-wrapper">🔍</div>
+                  <div className="stat-panel-title">Detections Found</div>
                 </div>
-
-                <div className="alert-card warning">
-                  <div className="alert-header">
-                    <span className="alert-type">Flow Anomaly</span>
-                    <span className="alert-severity">Warning</span>
+                <div className="stat-main-value">47</div>
+                <div className="stat-breakdown">
+                  <div className="breakdown-item">
+                    <span className="breakdown-label">Critical</span>
+                    <span className="breakdown-value critical">12</span>
                   </div>
-                  <div className="alert-location">
-                    <span>📍</span>
-                    <span>Sector B-12, KM 89.7</span>
-                  </div>
-                  <div className="alert-description">
-                    Flow rate decreased by 8% over the last 30 minutes. Monitor for changes.
-                  </div>
-                  <div className="alert-footer">
-                    <span className="alert-timestamp">02:00:12</span>
-                    <button className="alert-action">Monitor</button>
-                  </div>
-                </div>
-
-                <div className="alert-card info">
-                  <div className="alert-header">
-                    <span className="alert-type">Maintenance Due</span>
-                    <span className="alert-severity">Info</span>
-                  </div>
-                  <div className="alert-location">
-                    <span>📍</span>
-                    <span>Sector C-3, KM 234.1</span>
-                  </div>
-                  <div className="alert-description">
-                    Quarterly valve inspection scheduled. Maintenance window available.
-                  </div>
-                  <div className="alert-footer">
-                    <span className="alert-timestamp">01:45:22</span>
-                    <button className="alert-action">Schedule</button>
+                  <div className="breakdown-item">
+                    <span className="breakdown-label">Warning</span>
+                    <span className="breakdown-value warning">35</span>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Detected Defects */}
-          <div className="industrial-panel">
-            <div className="panel-header">
-              <h2 className="panel-title">Detected Defects</h2>
-            </div>
-            <div className="panel-content">
-              <div className="defects-list">
-                <div className="defect-item">
-                  <div className="defect-header">
-                    <span className="defect-type-badge critical">Corrosion</span>
-                    <span className="defect-severity">High</span>
-                  </div>
-                  <div className="defect-details">
-                    <span className="defect-location">Sector A-7, KM 125.3</span>
-                    <span className="defect-date">2024-12-15</span>
-                  </div>
-                  <div className="defect-description">
-                    Wall thickness reduced by 35% in elbow section. Immediate repair recommended.
+            {/* Alerts Grid - Control System and Drone Data */}
+            <div className="alerts-grid">
+              {/* Control System Data Alerts */}
+              <div className="industrial-panel">
+                <div className="panel-header">
+                  <h2 className="panel-title">
+                    <span className="panel-icon">⚙️</span>
+                    Control System Data Alerts
+                  </h2>
+                  <div className="panel-badge">2 NEW</div>
+                </div>
+                <div className="panel-content">
+                  <div className="alerts-container">
+                    <div className="alert-card critical">
+                      <div className="alert-header">
+                        <span className="alert-type">Major/Sudden Leak</span>
+                        <span className="alert-severity">Critical</span>
+                      </div>
+                      <div className="alert-location">
+                        <span>📍</span>
+                        <span>Sector A-7, KM 125.3</span>
+                      </div>
+                      <div className="alert-description">
+                        <strong>High pressure drop detected</strong><br/>
+                        PT sensor reading: 15 PSI below operational threshold. Immediate inspection required.
+                      </div>
+                      <div className="alert-footer">
+                        <span className="alert-timestamp">02:15:34</span>
+                        <span className="alert-source">PT Transmitter</span>
+                        <button className="alert-action">Investigate</button>
+                      </div>
+                    </div>
+
+                    <div className="alert-card warning">
+                      <div className="alert-header">
+                        <span className="alert-type">Mass Flow Imbalance</span>
+                        <span className="alert-severity">Warning</span>
+                      </div>
+                      <div className="alert-location">
+                        <span>📍</span>
+                        <span>Sector B-12, KM 89.7</span>
+                      </div>
+                      <div className="alert-description">
+                        <strong>Flow rate anomaly detected</strong><br/>
+                        FT sensor indicates 8% decrease over 30 minutes. Monitor for continued deviation.
+                      </div>
+                      <div className="alert-footer">
+                        <span className="alert-timestamp">02:00:12</span>
+                        <span className="alert-source">FT Transmitter</span>
+                        <button className="alert-action">Monitor</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="defect-item">
-                  <div className="defect-header">
-                    <span className="defect-type-badge warning">Crack</span>
-                    <span className="defect-severity">Medium</span>
-                  </div>
-                  <div className="defect-details">
-                    <span className="defect-location">Sector B-12, KM 89.7</span>
-                    <span className="defect-date">2024-12-14</span>
-                  </div>
-                  <div className="defect-description">
-                    Longitudinal crack detected in weld seam. Schedule inspection.
-                  </div>
+              {/* Drone Data Alerts */}
+              <div className="industrial-panel">
+                <div className="panel-header">
+                  <h2 className="panel-title">
+                    <span className="panel-icon">🚁</span>
+                    Drone Data Alerts
+                  </h2>
+                  <div className="panel-badge">1 NEW</div>
                 </div>
+                <div className="panel-content">
+                  <div className="alerts-container">
+                    <div className="alert-card critical">
+                      <div className="alert-header">
+                        <span className="alert-type">Visual Spill Detection</span>
+                        <span className="alert-severity">Critical</span>
+                      </div>
+                      <div className="alert-location">
+                        <span>📍</span>
+                        <span>Sector A-7, KM 125.3</span>
+                      </div>
+                      <div className="alert-description">
+                        <strong>Direct visual sighting confirmed</strong><br/>
+                        Visible spectrum camera detected liquid spill at pipeline section. Ground team dispatched.
+                      </div>
+                      <div className="alert-footer">
+                        <span className="alert-timestamp">02:18:45</span>
+                        <span className="alert-source">Visible Camera</span>
+                        <button className="alert-action">Investigate</button>
+                      </div>
+                    </div>
 
-                <div className="defect-item">
-                  <div className="defect-header">
-                    <span className="defect-type-badge info">Dent</span>
-                    <span className="defect-severity">Low</span>
-                  </div>
-                  <div className="defect-details">
-                    <span className="defect-location">Sector C-3, KM 234.1</span>
-                    <span className="defect-date">2024-12-13</span>
-                  </div>
-                  <div className="defect-description">
-                    Minor dent with no wall thickness reduction. Monitor condition.
+                    <div className="alert-card warning">
+                      <div className="alert-header">
+                        <span className="alert-type">Gas Cloud Detection</span>
+                        <span className="alert-severity">Warning</span>
+                      </div>
+                      <div className="alert-location">
+                        <span>📍</span>
+                        <span>Sector B-12, KM 89.7</span>
+                      </div>
+                      <div className="alert-description">
+                        <strong>Spectroscopic analysis positive</strong><br/>
+                        Gas cloud composition indicates hydrocarbon leak. Concentration levels elevated.
+                      </div>
+                      <div className="alert-footer">
+                        <span className="alert-timestamp">02:05:33</span>
+                        <span className="alert-source">Spectroscopic Sensor</span>
+                        <button className="alert-action">Monitor</button>
+                      </div>
+                    </div>
+
+                    <div className="alert-card warning">
+                      <div className="alert-header">
+                        <span className="alert-type">Thermal Anomaly</span>
+                        <span className="alert-severity">Warning</span>
+                      </div>
+                      <div className="alert-location">
+                        <span>📍</span>
+                        <span>Sector C-3, KM 234.1</span>
+                      </div>
+                      <div className="alert-description">
+                        <strong>Ground thermal signature detected</strong><br/>
+                        Thermal imaging camera identified distinct heat pattern on ground surface.
+                      </div>
+                      <div className="alert-footer">
+                        <span className="alert-timestamp">01:52:17</span>
+                        <span className="alert-source">Thermal Camera</span>
+                        <button className="alert-action">Inspect</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

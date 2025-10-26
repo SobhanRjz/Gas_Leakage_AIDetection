@@ -15,6 +15,128 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
+/* =================================================================
+   DESIGN SYSTEM TOKENS
+   ================================================================= */
+
+/* Color Palette */
+:root {
+  /* Backgrounds */
+  --color-bg: #0B0F14;
+  --color-surface: #10141B;
+  --color-card: #121925;
+  --color-card-hover: #1a2332;
+
+  /* Borders */
+  --color-border: #1F2A37;
+  --color-border-subtle: rgba(31, 42, 55, 0.5);
+
+  /* Text */
+  --color-text-primary: #E6EDF3;
+  --color-text-secondary: #9FB0C3;
+  --color-text-muted: #6C7C90;
+
+  /* Brand Colors */
+  --color-brand: #2EA8FF;
+  --color-brand-hover: #5BC2FF;
+  --color-brand-pressed: #1D83CC;
+  --color-brand-subtle: rgba(46, 168, 255, 0.1);
+
+  /* Severity Colors */
+  --color-severity-major: #FF6257;
+  --color-severity-minor: #FFB020;
+  --color-severity-info: #5BC2FF;
+  --color-severity-healthy: #31D0AA;
+
+  /* Sensor Badge Colors */
+  --color-badge-pt: #A78BFA;
+  --color-badge-ft: #60A5FA;
+  --color-badge-tt: #34D399;
+  --color-badge-seismo: #F472B6;
+
+  /* Spacing Scale */
+  --space-xs: 0.5rem;    /* 8px */
+  --space-sm: 0.75rem;   /* 12px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.25rem;   /* 20px */
+  --space-xl: 1.5rem;    /* 24px */
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;  /* 4px - controls */
+  --radius-md: 0.5rem;   /* 8px - buttons */
+  --radius-lg: 0.75rem;  /* 12px - cards */
+  --radius-xl: 1rem;     /* 16px - large cards */
+
+  /* Typography */
+  --font-size-xs: 0.75rem;   /* 12px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-base: 1rem;    /* 16px */
+  --font-size-lg: 1.125rem;  /* 18px */
+  --font-size-xl: 1.25rem;   /* 20px */
+
+  --font-weight-normal: 500;
+  --font-weight-medium: 600;
+  --font-weight-bold: 700;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+}
+
+/* Theme Variables */
+.theme-light {
+  --bg-gradient-start: #f8fafc;
+  --bg-gradient-end: #f1f5f9;
+  --app-background: #f8fafc;
+  --surface-background: #ffffff;
+  --raised-card-background: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border-color: #e2e8f0;
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-pressed: #1e40af;
+  --severity-major: #ef4444;
+  --severity-minor: #f59e0b;
+  --severity-info: #0ea5e9;
+  --severity-healthy: #10b981;
+  --badge-pt: #8b5cf6;
+  --badge-ft: #3b82f6;
+  --badge-tt: #10b981;
+  --badge-seismo: #ec4899;
+}
+
+.theme-dark {
+  --bg-gradient-start: var(--color-bg);
+  --bg-gradient-end: var(--color-surface);
+  --app-background: var(--color-bg);
+  --surface-background: var(--color-surface);
+  --raised-card-background: var(--color-card);
+  --text-primary: var(--color-text-primary);
+  --text-secondary: var(--color-text-secondary);
+  --text-muted: var(--color-text-muted);
+  --border-color: var(--color-border);
+  --primary-color: var(--color-brand);
+  --primary-hover: var(--color-brand-hover);
+  --primary-pressed: var(--color-brand-pressed);
+  --severity-major: var(--color-severity-major);
+  --severity-minor: var(--color-severity-minor);
+  --severity-info: var(--color-severity-info);
+  --severity-healthy: var(--color-severity-healthy);
+  --badge-pt: var(--color-badge-pt);
+  --badge-ft: var(--color-badge-ft);
+  --badge-tt: var(--color-badge-tt);
+  --badge-seismo: var(--color-badge-seismo);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -27,12 +149,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background-color);
+  background: var(--app-background);
   color: var(--text-primary);
   line-height: 1.6;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  transition: all 0.3s ease;
 }
 
 html {
