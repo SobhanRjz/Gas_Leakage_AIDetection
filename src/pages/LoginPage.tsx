@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../services/AuthService'
+import { ThemeContext } from '../components/Header'
 import './LoginPage.css'
 
 // Path resolution that works in both development and production
@@ -14,6 +15,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const { isDarkTheme } = React.useContext(ThemeContext)
 
   // Form validation
   const isFormValid = username.trim() !== '' && password.trim() !== ''
@@ -56,7 +58,7 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="login-page">
+    <div className={`login-page ${isDarkTheme ? 'theme-dark' : 'theme-light'}`}>
       {/* Fullscreen background image */}
       <img
         className="login-bg"
