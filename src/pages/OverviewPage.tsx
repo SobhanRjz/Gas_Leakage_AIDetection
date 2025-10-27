@@ -10,28 +10,39 @@ import './OverviewPage.css'
 const OverviewPage: React.FC = () => {
   const navigate = useNavigate()
   const { isDarkTheme } = React.useContext(ThemeContext)
+  const [currentTime, setCurrentTime] = React.useState(new Date())
+
+  React.useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000)
+    return () => clearInterval(timer)
+  }, [])
 
   return (
     <div className={`overview-page ${isDarkTheme ? 'theme-dark' : 'theme-light'}`}>
+      {/* Page Header */}
+      <div className="page-header">
+        <div className="header-left">
+          <h1 className="page-title">Pipeline Monitoring Dashboard</h1>
+          <p className="page-subtitle">Real-time surveillance and defect detection system</p>
+        </div>
+        <div className="header-right">
+          <div className="time-display">
+            <span className="time-label">Last Updated</span>
+            <span className="time-value">{currentTime.toLocaleTimeString()}</span>
+          </div>
+          <button className="quick-action-btn upload" onClick={() => navigate('/upload')}>
+            📤 Upload Media
+          </button>
+        </div>
+      </div>
+
       {/* System Status Bar */}
       <div className="system-status-bar">
         <div className="system-status-indicator">
           <div className="status-pulse"></div>
-          <span className="system-status-text">System Operational</span>
+          <span className="system-status-text">Operational System</span>
         </div>
         <div className="system-metrics">
-          <div className="metric-indicator">
-            <span className="metric-label">Active Leaks</span>
-            <span className="metric-value"><span className="highlight">3</span></span>
-          </div>
-          <div className="metric-indicator">
-            <span className="metric-label">Sensors Online</span>
-            <span className="metric-value">156/160</span>
-          </div>
-          <div className="metric-indicator">
-            <span className="metric-label">Last Update</span>
-            <span className="metric-value">2s</span>
-          </div>
         </div>
         <div className="system-actions">
           <button className="action-btn" onClick={() => console.log('Refresh')}>
@@ -129,7 +140,6 @@ const OverviewPage: React.FC = () => {
           <div className="industrial-panel">
             <div className="panel-header">
               <h2 className="panel-title">Pipeline Network Monitor</h2>
-              <div className="panel-badge">3 ALERTS</div>
             </div>
             <div className="panel-content" style={{padding: 0}}>
               <div className="map-container">
@@ -255,7 +265,7 @@ const OverviewPage: React.FC = () => {
                     </div>
                     <div className="hud-metric-chip">
                       <div className="hud-metric-label">Problems</div>
-                      <div className="hud-metric-value critical">12</div>
+                      <div className="hud-metric-value critical">3</div>
                     </div>
                   </div>
 
@@ -272,10 +282,7 @@ const OverviewPage: React.FC = () => {
                       <div className="legend-dot critical"></div>
                       <span>Critical</span>
                     </div>
-                    <div className="legend-item">
-                      <div className="legend-dot warning"></div>
-                      <span>Warning</span>
-                    </div>
+
                   </div>
                 </div>
               </div>
@@ -286,10 +293,27 @@ const OverviewPage: React.FC = () => {
           <div className="main-panel-bottom">
             {/* Monitoring Statistics */}
             <div className="stats-grid">
+            <div className="stat-panel">
+                <div className="stat-panel-header">
+                  <div className="stat-icon-wrapper">🔍</div>
+                  <div className="stat-panel-title">Control System Data received</div>
+                </div>
+                <div className="stat-main-value">38</div>
+                <div className="stat-breakdown">
+                  <div className="breakdown-item">
+                    <span className="breakdown-label">Critical</span>
+                    <span className="breakdown-value">3</span>
+                  </div>
+                  <div className="breakdown-item">
+                    <span className="breakdown-label">Warning</span>
+                    <span className="breakdown-value">35</span>
+                  </div>
+                </div>
+              </div>
               <div className="stat-panel">
                 <div className="stat-panel-header">
                   <div className="stat-icon-wrapper">📊</div>
-                  <div className="stat-panel-title">Analysis Processed</div>
+                  <div className="stat-panel-title">Drone Data received</div>
                 </div>
                 <div className="stat-main-value">2,847</div>
                 <div className="stat-breakdown">
@@ -304,25 +328,8 @@ const OverviewPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="stat-panel">
-                <div className="stat-panel-header">
-                  <div className="stat-icon-wrapper">🔍</div>
-                  <div className="stat-panel-title">Detections Found</div>
-                </div>
-                <div className="stat-main-value">47</div>
-                <div className="stat-breakdown">
-                  <div className="breakdown-item">
-                    <span className="breakdown-label">Critical</span>
-                    <span className="breakdown-value critical">12</span>
-                  </div>
-                  <div className="breakdown-item">
-                    <span className="breakdown-label">Warning</span>
-                    <span className="breakdown-value warning">35</span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
+            </div>
             {/* Alerts Grid - Control System and Drone Data */}
             <div className="alerts-grid">
               {/* Control System Data Alerts */}
@@ -334,11 +341,14 @@ const OverviewPage: React.FC = () => {
                   </h2>
                   <div className="panel-badge">2 NEW</div>
                 </div>
+                <div className="panel-summary">
+                  <span className="summary-text">2 new alerts received in the last 7 days</span>
+                </div>
                 <div className="panel-content">
                   <div className="alerts-container">
                     <div className="alert-card critical">
                       <div className="alert-header">
-                        <span className="alert-type">Major/Sudden Leak</span>
+                        <span className="alert-type">Critical/Sudden Leak</span>
                         <span className="alert-severity">Critical</span>
                       </div>
                       <div className="alert-location">
@@ -386,7 +396,10 @@ const OverviewPage: React.FC = () => {
                     <span className="panel-icon">🚁</span>
                     Drone Data Alerts
                   </h2>
-                  <div className="panel-badge">1 NEW</div>
+                  <div className="panel-badge">3 NEW</div>
+                </div>
+                <div className="panel-summary">
+                  <span className="summary-text">3 new alert received in the last 7 days</span>
                 </div>
                 <div className="panel-content">
                   <div className="alerts-container">
@@ -453,6 +466,7 @@ const OverviewPage: React.FC = () => {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>

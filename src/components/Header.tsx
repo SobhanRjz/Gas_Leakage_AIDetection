@@ -21,7 +21,7 @@ interface HeaderProps {
 
 // Theme Provider Component
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
 
   // Apply theme class to document body
   React.useEffect(() => {
@@ -80,10 +80,11 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
 
         {/* Center: Primary nav */}
         <nav className="nav-center">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/overview" className="nav-link">Overview</Link>
-          <Link to="/reports" className="nav-link">Reports</Link>
-          <Link to="/about" className="nav-link">About</Link>
+          <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
+          <Link to="/overview" className={`nav-link ${location.pathname === '/overview' ? 'active' : ''}`}>Overview</Link>
+          <Link to="/upload" className={`nav-link ${location.pathname === '/upload' ? 'active' : ''}`}>Upload</Link>
+          <Link to="/reports" className={`nav-link ${location.pathname === '/reports' ? 'active' : ''}`}>Reports</Link>
+          <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>About</Link>
           <span className="active-indicator" aria-hidden="true"></span>
         </nav>
 

@@ -1,0 +1,528 @@
+/* =================================================================
+   ABOUT PAGE - MODERN MINIMAL DESIGN
+   ================================================================= */
+
+/* Theme Variables */
+.theme-dark {
+  --about-bg-start: #0a0e1a;
+  --about-bg-end: #12171f;
+  --about-surface: #1a1f2e;
+  --about-border: #2a3344;
+  --about-text-primary: #e8edf4;
+  --about-text-secondary: #8b92a7;
+  --about-text-dim: #5a6176;
+  --about-accent: #0ea5e9;
+  --about-accent-dim: rgba(14, 165, 233, 0.1);
+  --about-shadow: rgba(0, 0, 0, 0.3);
+}
+
+.theme-light {
+  --about-bg-start: #f8fafc;
+  --about-bg-end: #f1f5f9;
+  --about-surface: #ffffff;
+  --about-border: #e2e8f0;
+  --about-text-primary: #0f172a;
+  --about-text-secondary: #475569;
+  --about-text-dim: #94a3b8;
+  --about-accent: #0ea5e9;
+  --about-accent-dim: rgba(14, 165, 233, 0.1);
+  --about-shadow: rgba(0, 0, 0, 0.08);
+}
+
+.about-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--about-bg-start) 0%, var(--about-bg-end) 100%);
+  color: var(--about-text-primary);
+  font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+}
+
+/* =================================================================
+   HERO SECTION
+   ================================================================= */
+
+.about-hero {
+  text-align: center;
+  padding: 3rem 0 4rem;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: var(--about-accent-dim);
+  color: var(--about-accent);
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--about-accent);
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+  color: var(--about-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.hero-description {
+  font-size: 1.25rem;
+  color: var(--about-text-secondary);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* =================================================================
+   MISSION SECTION
+   ================================================================= */
+
+.mission-section {
+  background: var(--about-surface);
+  border: 1px solid var(--about-border);
+  border-radius: 1rem;
+  padding: 3rem;
+  margin-bottom: 4rem;
+  box-shadow: 0 4px 16px var(--about-shadow);
+}
+
+.about-page.theme-dark .mission-section {
+  background: #1a1f2e !important;
+  border-color: #2a3344 !important;
+}
+
+.about-page.theme-light .mission-section {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+  color: var(--about-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.section-text {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--about-text-secondary);
+  margin: 0;
+}
+
+.section-title-center {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 3rem;
+  color: var(--about-text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* =================================================================
+   FEATURES SECTION
+   ================================================================= */
+
+.features-section {
+  margin-bottom: 4rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.feature-card {
+  background: var(--about-surface);
+  border: 1px solid var(--about-border);
+  border-radius: 1rem;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px var(--about-shadow);
+}
+
+.about-page.theme-dark .feature-card {
+  background: #1a1f2e !important;
+  border-color: #2a3344 !important;
+}
+
+.about-page.theme-light .feature-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px var(--about-shadow);
+  border-color: var(--about-accent);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  color: var(--about-text-primary);
+}
+
+.feature-description {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--about-text-secondary);
+  margin: 0;
+}
+
+/* =================================================================
+   TECHNOLOGY SECTION
+   ================================================================= */
+
+.tech-section {
+  margin-bottom: 4rem;
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.tech-category {
+  background: var(--about-surface);
+  border: 1px solid var(--about-border);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 2px 8px var(--about-shadow);
+}
+
+.about-page.theme-dark .tech-category {
+  background: #1a1f2e !important;
+  border-color: #2a3344 !important;
+}
+
+.about-page.theme-light .tech-category {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+.tech-category-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem;
+  color: var(--about-text-primary);
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.tech-tag {
+  background: var(--about-accent-dim);
+  color: var(--about-accent);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid var(--about-accent);
+  transition: all 0.3s ease;
+}
+
+.tech-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+/* =================================================================
+   STATS SECTION
+   ================================================================= */
+
+.stats-section {
+  background: linear-gradient(135deg, var(--about-accent), #0284c7);
+  border-radius: 1rem;
+  padding: 3rem;
+  margin-bottom: 4rem;
+  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.3);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* =================================================================
+   BENEFITS SECTION
+   ================================================================= */
+
+.benefits-section {
+  margin-bottom: 4rem;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.benefit-item {
+  background: var(--about-surface);
+  border: 1px solid var(--about-border);
+  border-radius: 1rem;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 2px 8px var(--about-shadow);
+  transition: all 0.3s ease;
+}
+
+.about-page.theme-dark .benefit-item {
+  background: #1a1f2e !important;
+  border-color: #2a3344 !important;
+}
+
+.about-page.theme-light .benefit-item {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+.benefit-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px var(--about-shadow);
+}
+
+.benefit-number {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--about-border);
+  line-height: 1;
+}
+
+.benefit-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  color: var(--about-text-primary);
+}
+
+.benefit-text {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--about-text-secondary);
+  margin: 0;
+}
+
+/* =================================================================
+   CONTACT SECTION
+   ================================================================= */
+
+.contact-section {
+  background: var(--about-surface);
+  border: 1px solid var(--about-border);
+  border-radius: 1rem;
+  padding: 3rem;
+  text-align: center;
+  box-shadow: 0 4px 16px var(--about-shadow);
+}
+
+.about-page.theme-dark .contact-section {
+  background: #1a1f2e !important;
+  border-color: #2a3344 !important;
+}
+
+.about-page.theme-light .contact-section {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+.contact-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  color: var(--about-text-primary);
+}
+
+.contact-description {
+  font-size: 1.125rem;
+  color: var(--about-text-secondary);
+  margin: 0 0 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--about-accent-dim);
+  border: 1px solid var(--about-accent);
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+.contact-icon {
+  font-size: 1.5rem;
+}
+
+.contact-text {
+  font-size: 1rem;
+  color: var(--about-text-primary);
+  font-weight: 500;
+}
+
+/* =================================================================
+   RESPONSIVE DESIGN
+   ================================================================= */
+
+@media (max-width: 1024px) {
+  .about-container {
+    padding: 2rem 1.5rem 3rem;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-description {
+    font-size: 1.125rem;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .tech-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .about-hero {
+    padding: 2rem 0 3rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .mission-section {
+    padding: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .section-title,
+  .section-title-center {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .stats-section {
+    padding: 2rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+  }
+
+  .benefit-number {
+    font-size: 3rem;
+  }
+
+  .contact-section {
+    padding: 2rem;
+  }
+
+  .contact-title {
+    font-size: 1.5rem;
+  }
+
+  .contact-description {
+    font-size: 1rem;
+  }
+}
+

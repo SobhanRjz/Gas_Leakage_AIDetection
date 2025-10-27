@@ -45,19 +45,7 @@ const ReportAccordion: React.FC<ReportAccordionProps> = ({
           <div className="accordion-header-title">{title}</div>
         </div>
         <div className="accordion-header-info">
-          <span className="accordion-count">{count} {count === 1 ? 'alert' : 'alerts'}</span>
-          <div className="accordion-trend">
-            <div className="trend-sparkline">
-              {trend.bars.map((bar, index) => (
-                <div
-                  key={index}
-                  className={`trend-bar ${bar > 0 ? 'up' : bar < 0 ? 'down' : ''}`}
-                  style={{ height: `${Math.abs(bar) * 4 + 4}px` }}
-                />
-              ))}
-            </div>
-            <span>{trend.label}</span>
-          </div>
+
           <div className={`accordion-toggle ${isExpanded ? 'open' : ''}`}>
             <ChevronDown size={16} />
           </div>
@@ -125,20 +113,20 @@ const ReportPage: React.FC = () => {
     ],
     drone: isEmpty ? [] : [
       // Major/Sudden Leak
-      { id: 'drone-1', text: 'Direct visual sighting of spill in Sector A-7, KM 125.3. Visible spectrum camera detected liquid spill at pipeline section. Ground team dispatched.', sensor: 'visible', time: '02:18:45', location: 'Sector A-7', confidence: 98 },
-      { id: 'drone-2', text: 'Detection of gas cloud in Sector B-12, KM 89.7. Spectroscopic sensor indicates hydrocarbon leak. Concentration levels elevated.', sensor: 'spectroscopic', time: '02:05:33', location: 'Sector B-12', confidence: 82 },
-      { id: 'drone-3', text: 'Distinct thermal anomaly on the ground in Sector C-3, KM 234.1. Thermal imaging camera detected ground thermal signature.', sensor: 'thermal', time: '01:52:17', location: 'Sector C-3', confidence: 71 },
+      { id: 'drone-1', text: 'Direct visual sighting of spill in Sector A-7, KM 125.3. Visible spectrum camera detected liquid spill at pipeline section. Ground team dispatched.', sensor: 'Visible Spectrum Camera', time: '02:18:45', location: 'Sector A-7', confidence: 98 },
+      { id: 'drone-2', text: 'Detection of gas cloud in Sector B-12, KM 89.7. Spectroscopic sensor indicates hydrocarbon leak. Concentration levels elevated.', sensor: 'Spectroscopic Sensor', time: '02:05:33', location: 'Sector B-12', confidence: 82 },
+      { id: 'drone-3', text: 'Distinct thermal anomaly on the ground in Sector C-3, KM 234.1. Thermal imaging camera detected ground thermal signature.', sensor: 'Thermal Imaging Camera', time: '01:52:17', location: 'Sector C-3', confidence: 71 },
       // Minor/Gradual Leak
-      { id: 'drone-4', text: 'Gradual discoloration detected in Sector D-5, KM 67.8. Visible spectrum camera identified soil staining pattern indicating slow leak.', sensor: 'visible', time: '03:12:22', location: 'Sector D-5', confidence: 87 },
-      { id: 'drone-5', text: 'Consistently elevated gas concentration at specific point in Sector E-9, KM 145.2. Spectroscopic sensor monitoring shows persistent readings.', sensor: 'spectroscopic', time: '03:08:41', location: 'Sector E-9', confidence: 76 },
-      { id: 'drone-6', text: 'Long-term changes in soil temperature in Sector F-2, KM 89.5. Thermal imaging camera detected gradual warming pattern over 48 hours.', sensor: 'thermal', time: '02:45:33', location: 'Sector F-2', confidence: 68 },
+      { id: 'drone-4', text: 'Gradual discoloration detected in Sector D-5, KM 67.8. Visible spectrum camera identified soil staining pattern indicating slow leak.', sensor: 'Visible Spectrum Camera', time: '03:12:22', location: 'Sector D-5', confidence: 87 },
+      { id: 'drone-5', text: 'Consistently elevated gas concentration at specific point in Sector E-9, KM 145.2. Spectroscopic sensor monitoring shows persistent readings.', sensor: 'Spectroscopic Sensor', time: '03:08:41', location: 'Sector E-9', confidence: 76 },
+      { id: 'drone-6', text: 'Long-term changes in soil temperature in Sector F-2, KM 89.5. Thermal imaging camera detected gradual warming pattern over 48 hours.', sensor: 'Thermal Imaging Camera', time: '02:45:33', location: 'Sector F-2', confidence: 68 },
       // Corrosion & Erosion
-      { id: 'drone-7', text: 'Visual signs of rust and coating damage in Sector A-3, KM 234.7. Visible spectrum camera identified corrosion on exposed pipe section.', sensor: 'visible', time: '01:28:15', location: 'Sector A-3', confidence: 91 },
+      { id: 'drone-7', text: 'Visual signs of rust and coating damage in Sector A-3, KM 234.7. Visible spectrum camera identified corrosion on exposed pipe section.', sensor: 'Visible Spectrum Camera', time: '01:28:15', location: 'Sector A-3', confidence: 91 },
       // Mechanical Damage
       { id: 'drone-8', text: 'Clear identification of damage: dents detected in Sector B-8, KM 156.3. Visible spectrum camera captured mechanical deformation on pipeline.', sensor: 'visible', time: '00:55:42', location: 'Sector B-8', confidence: 94 },
       // Insulation/Coating Failure
       { id: 'drone-9', text: 'Detection of insulation failures in Sector C-7, KM 78.9. Visible spectrum camera identified damaged coating and exposed insulation.', sensor: 'visible', time: '04:17:28', location: 'Sector C-7', confidence: 89 },
-      { id: 'drone-10', text: 'Hot spots detected along the pipe in Sector D-1, KM 112.4. Thermal imaging camera identified temperature anomalies indicating insulation failure.', sensor: 'thermal', time: '03:33:19', location: 'Sector D-1', confidence: 73 },
+      { id: 'drone-10', text: 'Hot spots detected along the pipe in Sector D-1, KM 112.4. Thermal imaging camera identified temperature anomalies indicating insulation failure.', sensor: 'Thermal Imaging Camera', time: '03:33:19', location: 'Sector D-1', confidence: 73 },
       // Poor Pipe Support
       { id: 'drone-11', text: 'Visual identification of loose pipe supports in Sector E-4, KM 198.6. Visible spectrum camera detected shifted and broken support structures.', sensor: 'visible', time: '02:29:07', location: 'Sector E-4', confidence: 85 },
       { id: 'drone-12', text: 'Identification of soil erosion under the pipe in Sector F-6, KM 167.8. Visible spectrum camera captured subsidence and soil movement.', sensor: 'visible', time: '01:14:53', location: 'Sector F-6', confidence: 79 }
@@ -336,7 +324,7 @@ const ReportPage: React.FC = () => {
           <div className="industrial-panel">
             <div className="panel-header">
               <h2 className="panel-title">Defects Registry</h2>
-              <div className="panel-badge">47 TOTAL</div>
+              
             </div>
             <div className="panel-content">
               <div className="data-table-container">
@@ -356,7 +344,7 @@ const ReportPage: React.FC = () => {
                       <td><span className="id-badge">DEF-001</span></td>
                       <td>Corrosion</td>
                       <td>Sector A-7, KM 125.3</td>
-                      <td><span className="severity-badge critical">High</span></td>
+                      <td><span className="severity-badge critical">Critical</span></td>
                       <td>2024-12-15</td>
                       <td><span className="status-badge pending">Pending</span></td>
                     </tr>
@@ -380,7 +368,7 @@ const ReportPage: React.FC = () => {
                       <td><span className="id-badge">DEF-004</span></td>
                       <td>Corrosion</td>
                       <td>Sector A-9, KM 145.8</td>
-                      <td><span className="severity-badge critical">High</span></td>
+                      <td><span className="severity-badge critical">Critical</span></td>
                       <td>2024-12-12</td>
                       <td><span className="status-badge pending">Pending</span></td>
                     </tr>
@@ -555,7 +543,7 @@ const ReportPage: React.FC = () => {
                 <div className="config-section">
                   <div className="config-section-title">Filters</div>
                   <div className="filter-tags">
-                    {['All Severity', 'Major', 'Minor', 'PT', 'FT', 'Region A'].map(filter => (
+                    {['All Severity', 'Critical', 'Warning', 'PT', 'FT', 'Region A'].map(filter => (
                       <button
                         key={filter}
                         className={`filter-tag ${activeFilters.includes(filter) ? 'active' : ''}`}
@@ -666,31 +654,22 @@ const ReportPage: React.FC = () => {
               </span>
               <div className="filter-chips">
                 <button
-                  className={`filter-chip severity-major ${activeFilters.includes('Major') ? 'active' : ''}`}
-                  onClick={() => toggleFilter('Major')}
+                  className={`filter-chip severity-critical ${activeFilters.includes('Critical') ? 'active' : ''}`}
+                  onClick={() => toggleFilter('Critical')}
                   disabled={selectedItems.length > 0}
-                  aria-pressed={activeFilters.includes('Major')}
-                  aria-label="Toggle Major severity filter"
+                  aria-pressed={activeFilters.includes('Critical')}
+                  aria-label="Toggle Critical severity filter"
                 >
-                  Major (12)
+                  Critical (3)
                 </button>
                 <button
-                  className={`filter-chip severity-minor ${activeFilters.includes('Minor') ? 'active' : ''}`}
-                  onClick={() => toggleFilter('Minor')}
+                  className={`filter-chip severity-warning ${activeFilters.includes('Warning') ? 'active' : ''}`}
+                  onClick={() => toggleFilter('Warning')}
                   disabled={selectedItems.length > 0}
-                  aria-pressed={activeFilters.includes('Minor')}
-                  aria-label="Toggle Minor severity filter"
+                  aria-pressed={activeFilters.includes('Warning')}
+                  aria-label="Toggle Warning severity filter"
                 >
-                  Minor (45)
-                </button>
-                <button
-                  className={`filter-chip severity-info ${activeFilters.includes('Corrosion') ? 'active' : ''}`}
-                  onClick={() => toggleFilter('Corrosion')}
-                  disabled={selectedItems.length > 0}
-                  aria-pressed={activeFilters.includes('Corrosion')}
-                  aria-label="Toggle Corrosion filter"
-                >
-                  Corrosion (20)
+                  Warning (35)
                 </button>
               </div>
             </div>

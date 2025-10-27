@@ -144,7 +144,7 @@
   animation: fadeInUp 0.6s ease-out 0.8s forwards;
 }
 
-.features-section {
+.landing-page .features-section {
   padding: 4rem 2rem;
   background-color: var(--card-background);
   display: grid;
@@ -157,7 +157,7 @@
   animation: fadeInUp 1s ease-out 1.2s forwards;
 }
 
-.feature-card {
+.landing-page .feature-card {
   background-color: var(--background-color);
   padding: 2rem;
   border-radius: 1rem;
@@ -169,23 +169,23 @@
   animation: fadeInUp 0.8s ease-out calc(1.4s + var(--card-index, 0) * 0.1s) forwards;
 }
 
-.feature-card:hover {
+.landing-page .feature-card:hover {
   transform: translateY(-4px);
 }
 
-.feature-icon {
+.landing-page .feature-icon {
   font-size: 3rem;
   margin-bottom: 1rem;
 }
 
-.feature-card h3 {
+.landing-page .feature-card h3 {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
   color: var(--text-primary);
 }
 
-.feature-card p {
+.landing-page .feature-card p {
   color: var(--text-secondary);
   line-height: 1.6;
 }
@@ -227,13 +227,13 @@
     font-size: 0.95rem;
   }
 
-  .features-section {
+  .landing-page .features-section {
     padding: 3rem 1rem;
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  .feature-card {
+  .landing-page .feature-card {
     padding: 1.5rem;
   }
 }

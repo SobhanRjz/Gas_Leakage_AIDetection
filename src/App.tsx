@@ -7,6 +7,8 @@ import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import OverviewPage from './pages/OverviewPage'
 import ReportPage from './pages/ReportPage'
+import UploadPage from './pages/UploadPage'
+import AboutPage from './pages/AboutPage'
 
 /**
  * Main application component with routing configuration
@@ -22,6 +24,8 @@ const App: React.FC = () => {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/overview" element={<OverviewPage />} />
               <Route path="/reports" element={<ReportPage />} />
+              <Route path="/upload" element={<UploadPage />} />
+              <Route path="/about" element={<AboutPage />} />
             </Routes>
           </Layout>
         </Router>

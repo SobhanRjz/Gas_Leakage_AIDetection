@@ -1208,10 +1208,6 @@
   box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
 }
 
-.sensor-badge[data-type="ft"]::after {
-  content: 'Flow Transmitter';
-}
-
 .sensor-badge[data-type="ft"]:hover::after {
   opacity: 1;
 }
@@ -1223,53 +1219,41 @@
   box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
 }
 
-.sensor-badge[data-type="tt"]::after {
-  content: 'Temperature Transmitter';
-}
+
 
 .sensor-badge[data-type="tt"]:hover::after {
   opacity: 1;
 }
 
-.sensor-badge[data-type="visible"] {
+.sensor-badge[data-type="Visible Spectrum Camera"] {
   background: var(--color-brand);
   border-color: var(--color-brand);
   color: white;
 }
 
-.sensor-badge[data-type="visible"]::after {
-  content: 'Visible Spectrum Camera';
-}
 
-.sensor-badge[data-type="visible"]:hover::after {
+.sensor-badge[data-type="Visible Spectrum Camera"]:hover::after {
   opacity: 1;
 }
 
-.sensor-badge[data-type="spectroscopic"] {
+.sensor-badge[data-type="Spectroscopic Sensor"] {
   background: var(--color-severity-minor);
   border-color: var(--color-severity-minor);
   color: white;
 }
 
-.sensor-badge[data-type="spectroscopic"]::after {
-  content: 'Spectroscopic Sensor';
-}
 
 .sensor-badge[data-type="spectroscopic"]:hover::after {
   opacity: 1;
 }
 
-.sensor-badge[data-type="thermal"] {
+.sensor-badge[data-type="Thermal Imaging Camera"] {
   background: var(--color-severity-major);
   border-color: var(--color-severity-major);
   color: white;
 }
 
-.sensor-badge[data-type="thermal"]::after {
-  content: 'Thermal Imaging Camera';
-}
-
-.sensor-badge[data-type="thermal"]:hover::after {
+.sensor-badge[data-type="Thermal Imaging Camera"]:hover::after {
   opacity: 1;
 }
 
@@ -1277,10 +1261,6 @@
   background: var(--color-badge-seismo);
   border-color: var(--color-badge-seismo);
   color: white;
-}
-
-.sensor-badge[data-type="seismometer"]::after {
-  content: 'Seismometer';
 }
 
 .sensor-badge[data-type="seismometer"]:hover::after {

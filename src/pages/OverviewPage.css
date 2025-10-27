@@ -61,6 +61,97 @@
 }
 
 /* =================================================================
+   PAGE HEADER
+   ================================================================= */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.header-left {
+  flex: 1;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: var(--industrial-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--industrial-text-secondary);
+  margin: 0;
+  font-weight: 400;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.time-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0.75rem 1rem;
+  background: var(--panel-gradient-start);
+  border: 1px solid var(--industrial-border);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.time-label {
+  font-size: 0.625rem;
+  color: var(--industrial-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.time-value {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--industrial-accent);
+}
+
+.quick-action-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.quick-action-btn.upload {
+  background: linear-gradient(135deg, var(--industrial-accent), #0284c7);
+  color: white;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+.quick-action-btn.upload:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+}
+
+/* =================================================================
    SYSTEM STATUS BAR
    ================================================================= */
 
@@ -114,7 +205,9 @@
 
 .metric-indicator {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
   gap: 0.25rem;
 }
 
@@ -180,19 +273,15 @@
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
   margin-bottom: 1.5rem;
-  justify-content: center;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .kpi-panel {
   background: linear-gradient(135deg, var(--panel-gradient-start) 0%, var(--panel-gradient-end) 100%);
   border: 1px solid var(--industrial-border);
-  border-radius: 0.5rem;
-  padding: 1.25rem;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -351,6 +440,19 @@
   font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.5px;
+}
+
+.panel-summary {
+  padding: 0.5rem 1.25rem;
+  border-bottom: 1px solid var(--industrial-border-light);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.summary-text {
+  font-size: 0.75rem;
+  color: var(--industrial-text-dim);
+  font-weight: 500;
+  opacity: 0.8;
 }
 
 .panel-content {
@@ -902,6 +1004,18 @@
 @media (max-width: 1024px) {
   .overview-page {
     padding: 1rem;
+    max-width: 95%;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .system-status-bar {
@@ -917,6 +1031,7 @@
 
   .kpi-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 
   .stats-grid {
@@ -934,8 +1049,39 @@
 }
 
 @media (max-width: 768px) {
+  .overview-page {
+    max-width: 100%;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .header-right {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .time-display {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .quick-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
   .kpi-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .map-container {
