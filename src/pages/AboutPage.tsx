@@ -217,14 +217,6 @@ const AboutPage: React.FC = () => {
                 <span className="contact-icon">📧</span>
                 <span className="contact-text">info@pipelinemonitor.com</span>
               </div>
-              <div className="contact-item">
-                <span className="contact-icon">📞</span>
-                <span className="contact-text">+1 (555) 123-4567</span>
-              </div>
-              <div className="contact-item">
-                <span className="contact-icon">📍</span>
-                <span className="contact-text">Energy Innovation Center, Houston, TX</span>
-              </div>
             </div>
           </div>
         </section>
