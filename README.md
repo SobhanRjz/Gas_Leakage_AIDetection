@@ -2,6 +2,13 @@
 
 A comprehensive web application for real-time gas pipeline monitoring, leak detection, and defect analysis using advanced AI deep learning technology.
 
+🌐 **Live Demo**: [https://sobhanrjz.github.io/Gas_Leakage_AIDetection/](https://sobhanrjz.github.io/Gas_Leakage_AIDetection/)
+
+[![Deployment Status](https://img.shields.io/badge/deployment-active-success)](https://sobhanrjz.github.io/Gas_Leakage_AIDetection/)
+[![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5-purple)](https://vitejs.dev/)
+
 ## 🚀 Key Features
 
 - **Real-time Monitoring Dashboard**: Live pipeline surveillance with 24/7 operational status tracking
@@ -149,9 +156,19 @@ src/
 - Optimized assets and code splitting
 - Lazy loading for images and routes
 
----
+## 🌐 Live Application
 
-**Live Demo**: [https://sobhanrjz.github.io/Gas_Leakage_AIDetection](https://sobhanrjz.github.io/Gas_Leakage_AIDetection)
+Visit the live application: **[https://sobhanrjz.github.io/Gas_Leakage_AIDetection/](https://sobhanrjz.github.io/Gas_Leakage_AIDetection/)**
+
+### Available Pages:
+- 🏠 **Home**: [Landing Page](https://sobhanrjz.github.io/Gas_Leakage_AIDetection/)
+- 📊 **Overview**: [Monitoring Dashboard](https://sobhanrjz.github.io/Gas_Leakage_AIDetection/#/overview)
+- 📈 **Reports**: [Analytics & Reports](https://sobhanrjz.github.io/Gas_Leakage_AIDetection/#/reports)
+- 📤 **Upload**: [AI Analysis Upload](https://sobhanrjz.github.io/Gas_Leakage_AIDetection/#/upload)
+- ℹ️ **About**: [Project Information](https://sobhanrjz.github.io/Gas_Leakage_AIDetection/#/about)
+- 🔐 **Login**: [Authentication](https://sobhanrjz.github.io/Gas_Leakage_AIDetection/#/login)
+
+---
 
 ## 📝 License
 
