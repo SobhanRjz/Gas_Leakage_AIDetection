@@ -669,7 +669,7 @@ const ReportPage: React.FC = () => {
                   aria-pressed={activeFilters.includes('Warning')}
                   aria-label="Toggle Warning severity filter"
                 >
-                  Warning (35)
+                  Warning (15)
                 </button>
               </div>
             </div>

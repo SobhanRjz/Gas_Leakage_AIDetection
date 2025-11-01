@@ -123,7 +123,7 @@ const OverviewPage: React.FC = () => {
             <span className="kpi-status-badge">Active</span>
           </div>
           <div className="kpi-data">
-            <div className="kpi-value-display">156</div>
+            <div className="kpi-value-display">156 / 160</div>
             <div className="kpi-label-text">Sensors Online</div>
           </div>
           <svg className="kpi-trend" viewBox="0 0 100 32" preserveAspectRatio="none">
@@ -264,7 +264,7 @@ const OverviewPage: React.FC = () => {
                       </div>
                     </div>
                     <div className="hud-metric-chip">
-                      <div className="hud-metric-label">Problems</div>
+                      <div className="hud-metric-label">Leakage Problems</div>
                       <div className="hud-metric-value critical">3</div>
                     </div>
                   </div>
@@ -306,7 +306,11 @@ const OverviewPage: React.FC = () => {
                   </div>
                   <div className="breakdown-item">
                     <span className="breakdown-label">Warning</span>
-                    <span className="breakdown-value">35</span>
+                    <span className="breakdown-value">15</span>
+                  </div>
+                  <div className="breakdown-item">
+                    <span className="breakdown-label">Normal</span>
+                    <span className="breakdown-value">20</span>
                   </div>
                 </div>
               </div>
@@ -339,10 +343,10 @@ const OverviewPage: React.FC = () => {
                     <span className="panel-icon">⚙️</span>
                     Control System Data Alerts
                   </h2>
-                  <div className="panel-badge">2 NEW</div>
+                  <div className="panel-badge">4 NEW</div>
                 </div>
                 <div className="panel-summary">
-                  <span className="summary-text">2 new alerts received in the last 7 days</span>
+                  <span className="summary-text">4 new alerts received in the last 7 days</span>
                 </div>
                 <div className="panel-content">
                   <div className="alerts-container">
@@ -361,7 +365,7 @@ const OverviewPage: React.FC = () => {
                       </div>
                       <div className="alert-footer">
                         <span className="alert-timestamp">02:15:34</span>
-                        <span className="alert-source">PT Transmitter</span>
+                        <span className="alert-source">PT</span>
                         <button className="alert-action">Investigate</button>
                       </div>
                     </div>
@@ -381,8 +385,48 @@ const OverviewPage: React.FC = () => {
                       </div>
                       <div className="alert-footer">
                         <span className="alert-timestamp">02:00:12</span>
-                        <span className="alert-source">FT Transmitter</span>
+                        <span className="alert-source">FT</span>
                         <button className="alert-action">Monitor</button>
+                      </div>
+                    </div>
+
+                    <div className="alert-card critical">
+                      <div className="alert-header">
+                        <span className="alert-type">DEF-004 - Corrosion</span>
+                        <span className="alert-severity">Critical</span>
+                      </div>
+                      <div className="alert-location">
+                        <span>📍</span>
+                        <span>Sector A-9, KM 145.8</span>
+                      </div>
+                      <div className="alert-description">
+                        <strong>Corrosion detected in pipeline section</strong><br/>
+                        Corrosion monitoring system indicates critical degradation. Immediate maintenance required.
+                      </div>
+                      <div className="alert-footer">
+                        <span className="alert-timestamp">12:45:22</span>
+                        <span className="alert-source">Corrosion Sensor</span>
+                        <button className="alert-action">Pending</button>
+                      </div>
+                    </div>
+
+                    <div className="alert-card critical">
+                      <div className="alert-header">
+                        <span className="alert-type">DEF-005 - Leak</span>
+                        <span className="alert-severity">Critical</span>
+                      </div>
+                      <div className="alert-location">
+                        <span>📍</span>
+                        <span>Sector B-5, KM 67.2</span>
+                      </div>
+                      <div className="alert-description">
+                        <strong>Leak detection system activated</strong><br/>
+                        Multiple sensors indicate potential leak. Investigation in progress.
+                      </div>
+                      <div className="alert-footer">
+                        <span className="alert-timestamp">08:30:15</span>
+                        <span className="alert-source">Leak Sensor</span>
+                        <button className="alert-action">In Progress</button>
                       </div>
                     </div>
                   </div>
