@@ -1,4 +1,18 @@
 services:
+  backend:
+    build:
+      context: ../../../src/backend
+      dockerfile: ../../infra/docker/dockerfiles/Dockerfile.backend.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../../../src/backend:/app
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - leakage-network
+    restart: unless-stopped
+
   frontend:
     build:
       context: ../../../src/frontend
@@ -12,3 +26,11 @@ services:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
+      - VITE_API_URL=http://backend:8000
+    networks:
+      - leakage-network
+    restart: unless-stopped
+
+networks:
+  leakage-network:
+    driver: bridge

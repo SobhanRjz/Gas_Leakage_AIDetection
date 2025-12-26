@@ -1,4 +1,23 @@
 services:
+  backend:
+    build:
+      context: ../../../src/backend
+      dockerfile: ../../infra/docker/dockerfiles/Dockerfile.backend
+    ports:
+      - "127.0.0.1:28002:8000"
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - leakage-network
+    restart: unless-stopped
+
   frontend:
     ports:
       - "127.0.0.1:28001:80"
+    networks:
+      - leakage-network
+    restart: unless-stopped
+
+networks:
+  leakage-network:
+    driver: bridge

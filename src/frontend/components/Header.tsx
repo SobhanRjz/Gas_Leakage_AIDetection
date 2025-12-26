@@ -84,6 +84,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
           <Link to="/overview" className={`nav-link ${location.pathname === '/overview' ? 'active' : ''}`}>Overview</Link>
           <Link to="/upload" className={`nav-link ${location.pathname === '/upload' ? 'active' : ''}`}>Upload</Link>
           <Link to="/reports" className={`nav-link ${location.pathname === '/reports' ? 'active' : ''}`}>Reports</Link>
+          <Link to="/ai-mode" className={`nav-link ${location.pathname === '/ai-mode' ? 'active' : ''}`}>AI Mode</Link>
           <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>About</Link>
           <span className="active-indicator" aria-hidden="true"></span>
         </nav>

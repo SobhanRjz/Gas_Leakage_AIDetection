@@ -1284,9 +1284,7 @@
   padding: 3rem 1.5rem;
   text-align: center;
   color: var(--color-text-secondary);
-  background: var(--color-surface);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border-subtle);
 }
 
 .empty-state-icon {

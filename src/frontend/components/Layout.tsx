@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useAuth } from '../services/AuthService'
 import Header from './Header'
 import './Layout.css'
@@ -15,18 +16,16 @@ interface LayoutProps {
  */
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { authState } = useAuth()
+  const location = useLocation()
+  const isLandingPage = location.pathname === '/'
+  const isLoginPage = location.pathname === '/login'
 
   return (
     <div className="layout">
-      <Header isAuthenticated={authState.isAuthenticated} />
-      <main className="main-content">
+      {!isLandingPage && !isLoginPage && <Header isAuthenticated={authState.isAuthenticated} />}
+      <main className={`main-content ${isLoginPage ? 'no-header' : ''}`}>
         {children}
       </main>
-      <footer className="footer">
-        <div className="footer-container">
-          <p>&copy; 2025 Pipeline Monitoring System</p>
-        </div>
-      </footer>
     </div>
   )
 }

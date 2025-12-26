@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../services/AuthService'
 import './LandingPage.css'
 
 // Path resolution that works in both development and production
@@ -9,8 +10,35 @@ const getImagePath = (filename: string) => `${import.meta.env.VITE_BASE || '/'}i
  * Landing page component
  */
 const LandingPage: React.FC = () => {
+  const { authState } = useAuth()
+  const navigate = useNavigate()
+
+  const handleStartTrial = () => {
+    if (authState.isAuthenticated) {
+      navigate('/overview')
+    } else {
+      navigate('/login')
+    }
+  }
+
+  const handleLogin = () => {
+    if (authState.isAuthenticated) {
+      navigate('/overview')
+    } else {
+      navigate('/login')
+    }
+  }
+
   return (
     <div className="landing-page">
+      <header className="top-nav">
+        <div className="nav-spacer" />
+        <div className="nav-actions">
+          <button onClick={handleLogin} className="nav-link">Log in</button>
+          <Link to="/signup" className="nav-link nav-primary">Sign up</Link>
+        </div>
+      </header>
+
       {/* Fullscreen background image */}
       <img
         className="hero-bg"
@@ -30,14 +58,14 @@ const LandingPage: React.FC = () => {
             Monitoring System
           </h1>
           <p className="hero-subtitle">
-            Real-time detection, analytics, and alerting for pipeline safety.
+            <strong>AI-powered monitoring</strong> that identifies leaks, pressure anomalies, and abnormal flow patterns in <strong>real time</strong>.
           </p>
           <div className="cta-row">
-            <Link to="/login" className="cta-primary">
-              Get Started
-            </Link>
+            <button onClick={handleStartTrial} className="cta-primary">
+              Start Free Trial
+            </button>
             <button className="cta-secondary">
-              ▶ Watch Demo
+              View Live Demo
             </button>
           </div>
           <div className="trust-note">
@@ -45,6 +73,17 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <footer className="landing-footer">
+        <div className="social-proof">
+          <div className="trust-text">Trusted by energy operators & infrastructure teams</div>
+          <div className="metrics">
+            <span className="metric">● Real-time monitoring</span>
+            <span className="metric">● Sub-second alerts</span>
+            <span className="metric">● Designed for industrial environments</span>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

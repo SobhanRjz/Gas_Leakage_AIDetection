@@ -9,6 +9,7 @@ import OverviewPage from './pages/OverviewPage'
 import ReportPage from './pages/ReportPage'
 import UploadPage from './pages/UploadPage'
 import AboutPage from './pages/AboutPage'
+import AIModeTab from './pages/AIModeTab'
 
 const BASENAME = import.meta.env.VITE_BASE || "/"
 
@@ -27,6 +28,7 @@ const App: React.FC = () => {
               <Route path="/overview" element={<OverviewPage />} />
               <Route path="/reports" element={<ReportPage />} />
               <Route path="/upload" element={<UploadPage />} />
+              <Route path="/ai-mode" element={<AIModeTab />} />
               <Route path="/about" element={<AboutPage />} />
             </Routes>
           </Layout>
