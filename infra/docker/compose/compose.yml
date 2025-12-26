@@ -2,11 +2,6 @@ services:
   backend:
     env_file:
       - .env
-    environment:
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      OPENAI_API_URL: https://api.openai.com/v1/chat/completions
-      OPENAI_MODEL: gpt-4o-mini
-      OPENAI_TEMPERATURE: "0.7"
     build:
       context: ../../../src/backend
       dockerfile: ../../infra/docker/dockerfiles/Dockerfile.backend
