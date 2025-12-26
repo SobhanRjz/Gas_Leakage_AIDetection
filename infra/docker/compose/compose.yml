@@ -1,0 +1,16 @@
+services:
+  frontend:
+    build:
+      context: ../../../src/frontend
+      dockerfile: ../../infra/docker/dockerfiles/Dockerfile.frontend
+    expose:
+      - "80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - leakage-network
+    restart: unless-stopped
+
+networks:
+  leakage-network:
+    driver: bridge

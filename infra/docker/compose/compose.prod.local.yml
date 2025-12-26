@@ -1,0 +1,14 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ../nginx/nginx.local.conf:/etc/nginx/nginx.conf:ro
+      - ../ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+    networks:
+      - leakage-network
+    restart: unless-stopped

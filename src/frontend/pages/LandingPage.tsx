@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './LandingPage.css'
 
 // Path resolution that works in both development and production
-const getImagePath = (filename: string) => `/Gas_Leakage_AIDetection/images/${filename}`
+const getImagePath = (filename: string) => `${import.meta.env.VITE_BASE || '/'}images/${filename}`
 
 /**
  * Landing page component

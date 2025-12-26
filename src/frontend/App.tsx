@@ -10,6 +10,8 @@ import ReportPage from './pages/ReportPage'
 import UploadPage from './pages/UploadPage'
 import AboutPage from './pages/AboutPage'
 
+const BASENAME = import.meta.env.VITE_BASE || "/"
+
 /**
  * Main application component with routing configuration
  */
@@ -17,7 +19,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Router basename="/Gas_Leakage_AIDetection">
+        <Router basename={BASENAME}>
           <Layout>
             <Routes>
               <Route path="/" element={<LandingPage />} />

@@ -5,7 +5,7 @@ import { ThemeContext } from '../components/Header'
 import './LoginPage.css'
 
 // Path resolution that works in both development and production
-const getImagePath = (filename: string) => `/Gas_Leakage_AIDetection/images/${filename}`
+const getImagePath = (filename: string) => `${import.meta.env.VITE_BASE || '/'}images/${filename}`
 
 /**
  * Login page component
