@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ThemeContext } from '../components/Header'
-import { ChevronDown, Pin, Check, Share2, Database, Plane } from 'lucide-react'
+import { ChevronDown, Pin, Check, Share2, Database, Plane, MessageCircle } from 'lucide-react'
+import DefectChatbot from '../components/DefectChatbot'
 import './ReportPage.css'
 
 interface AccordionState {
@@ -94,6 +95,14 @@ const ReportPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isEmpty, setIsEmpty] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Chatbot state
+  const [activeChatbot, setActiveChatbot] = useState<{
+    id: string;
+    type: string;
+    location: string;
+    severity: string;
+  } | null>(null)
 
   // Mock data for demonstration - in real app this would come from API
   const mockData = {
@@ -337,6 +346,7 @@ const ReportPage: React.FC = () => {
                       <th>Severity</th>
                       <th>Detected</th>
                       <th>Status</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -347,6 +357,16 @@ const ReportPage: React.FC = () => {
                       <td><span className="severity-badge critical">Critical</span></td>
                       <td>2024-12-15</td>
                       <td><span className="status-badge pending">Pending</span></td>
+                      <td>
+                        <button 
+                          className="chatbot-action-btn" 
+                          onClick={() => setActiveChatbot({ id: 'DEF-001', type: 'Corrosion', location: 'Sector A-7, KM 125.3', severity: 'Critical' })}
+                          aria-label="Get AI recommendations for this defect"
+                          title="Get AI recommendations"
+                        >
+                          <MessageCircle size={16} />
+                        </button>
+                      </td>
                     </tr>
                     <tr>
                       <td><span className="id-badge">DEF-002</span></td>
@@ -355,6 +375,16 @@ const ReportPage: React.FC = () => {
                       <td><span className="severity-badge warning">Medium</span></td>
                       <td>2024-12-14</td>
                       <td><span className="status-badge progress">In Progress</span></td>
+                      <td>
+                        <button 
+                          className="chatbot-action-btn" 
+                          onClick={() => setActiveChatbot({ id: 'DEF-002', type: 'Crack', location: 'Sector B-12, KM 89.7', severity: 'Medium' })}
+                          aria-label="Get AI recommendations for this defect"
+                          title="Get AI recommendations"
+                        >
+                          <MessageCircle size={16} />
+                        </button>
+                      </td>
                     </tr>
                     <tr>
                       <td><span className="id-badge">DEF-003</span></td>
@@ -363,6 +393,16 @@ const ReportPage: React.FC = () => {
                       <td><span className="severity-badge info">Low</span></td>
                       <td>2024-12-13</td>
                       <td><span className="status-badge resolved">Resolved</span></td>
+                      <td>
+                        <button 
+                          className="chatbot-action-btn" 
+                          onClick={() => setActiveChatbot({ id: 'DEF-003', type: 'Dent', location: 'Sector C-3, KM 234.1', severity: 'Low' })}
+                          aria-label="Get AI recommendations for this defect"
+                          title="Get AI recommendations"
+                        >
+                          <MessageCircle size={16} />
+                        </button>
+                      </td>
                     </tr>
                     <tr>
                       <td><span className="id-badge">DEF-004</span></td>
@@ -371,6 +411,16 @@ const ReportPage: React.FC = () => {
                       <td><span className="severity-badge critical">Critical</span></td>
                       <td>2024-12-12</td>
                       <td><span className="status-badge pending">Pending</span></td>
+                      <td>
+                        <button 
+                          className="chatbot-action-btn" 
+                          onClick={() => setActiveChatbot({ id: 'DEF-004', type: 'Corrosion', location: 'Sector A-9, KM 145.8', severity: 'Critical' })}
+                          aria-label="Get AI recommendations for this defect"
+                          title="Get AI recommendations"
+                        >
+                          <MessageCircle size={16} />
+                        </button>
+                      </td>
                     </tr>
                     <tr>
                       <td><span className="id-badge">DEF-005</span></td>
@@ -379,6 +429,16 @@ const ReportPage: React.FC = () => {
                       <td><span className="severity-badge critical">Critical</span></td>
                       <td>2024-12-10</td>
                       <td><span className="status-badge progress">In Progress</span></td>
+                      <td>
+                        <button 
+                          className="chatbot-action-btn" 
+                          onClick={() => setActiveChatbot({ id: 'DEF-005', type: 'Leak', location: 'Sector B-5, KM 67.2', severity: 'Critical' })}
+                          aria-label="Get AI recommendations for this defect"
+                          title="Get AI recommendations"
+                        >
+                          <MessageCircle size={16} />
+                        </button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -751,6 +811,17 @@ const ReportPage: React.FC = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Defect Chatbot */}
+      {activeChatbot && (
+        <DefectChatbot
+          defectId={activeChatbot.id}
+          defectType={activeChatbot.type}
+          location={activeChatbot.location}
+          severity={activeChatbot.severity}
+          onClose={() => setActiveChatbot(null)}
+        />
       )}
     </div>
   )

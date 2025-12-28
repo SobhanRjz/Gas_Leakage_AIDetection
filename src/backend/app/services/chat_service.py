@@ -24,7 +24,16 @@ class ChatService:
         self.logger = logger
         self.system_prompt = self._get_system_prompt()
 
-    def send_message(self, message: str, sensor_context: str = "", ml_status_context: str = "") -> str:
+    def send_message(
+        self, 
+        message: str, 
+        sensor_context: str = "", 
+        ml_status_context: str = "",
+        defect_id: str = None,
+        defect_type: str = None,
+        defect_location: str = None,
+        defect_severity: str = None
+    ) -> str:
         """Send chat message with context and return response."""
         try:
             # Ensure API key is a string (handle potential bytes object)
@@ -36,7 +45,43 @@ class ChatService:
                 self.logger.error("OpenAI API key not configured")
                 raise Exception("OpenAI API key not configured")
 
-            system_message = f"{self.system_prompt}\n\n{sensor_context}\n\n{ml_status_context}"
+            # Build defect context if defect information is provided
+            defect_context = ""
+            if defect_id and defect_type:
+                defect_context = f"""
+━━━━━━━━━━━━━━━━━━━━━━━━
+DEFECT REPAIR SPECIALIST MODE
+━━━━━━━━━━━━━━━━━━━━━━━━
+You are a pipeline repair and maintenance specialist. An operator is consulting you about a specific defect.
+
+**Defect Details:**
+- ID: {defect_id}
+- Type: {defect_type}
+- Location: {defect_location}
+- Severity: {defect_severity}
+
+**CRITICAL LANGUAGE INSTRUCTION:**
+- ALWAYS respond in the SAME language as the operator's question
+- If the operator writes in English → respond ONLY in English
+- If the operator writes in Persian/Farsi → respond ONLY in Persian/Farsi
+- Detect language from the operator's question text ONLY
+- NEVER mix languages in your response
+- Ignore any Persian/Arabic characters in defect IDs, locations, or technical terms when detecting language
+
+**Response Guidelines:**
+Provide practical repair recommendations including:
+1. Immediate actions based on severity level
+2. Step-by-step repair procedures
+3. Required tools, materials, and equipment
+4. Safety precautions and PPE requirements
+5. Estimated time and resource requirements
+6. Compliance and regulatory considerations
+7. Post-repair inspection and testing
+
+Be specific, practical, and prioritize safety and pipeline integrity.
+"""
+
+            system_message = f"{self.system_prompt}\n\n{defect_context}\n\n{sensor_context}\n\n{ml_status_context}"
 
             payload = {
                 "model": self.config.model,
@@ -78,16 +123,21 @@ class ChatService:
     3) Operator Question (the ONLY source for language detection)
 
     ━━━━━━━━━━━━━━━━━━━━━━━━
-    LANGUAGE (STRICT)
+    LANGUAGE DETECTION (CRITICAL)
     ━━━━━━━━━━━━━━━━━━━━━━━━
-    - Detect language ONLY from the Operator Question.
-    - Ignore sensor data, ML outputs, labels, units, IDs, numbers, and metadata when deciding language.
-    - If the Operator Question starts with "EN:" → respond in English.
-    - If the Operator Question starts with "FA:" → respond in Persian.
-    - Otherwise:
-    - If the Operator Question contains Persian/Arabic LETTERS (Unicode \\u0600–\\u06FF) → respond in Persian.
-    - Else → respond in English.
-    - Never mix languages in one response.
+    **ONLY analyze the operator's actual question text for language detection.**
+    
+    **IGNORE when detecting language:**
+    - Defect IDs (e.g., DEF-001, DEF-002)
+    - Location codes (e.g., Sector A-7, KM 125.3)
+    - Technical metadata and system-generated text
+    - Sensor names, units, timestamps
+    - Any text in context sections that is NOT the operator's question
+    
+    **Language Rules:**
+    1. NEVER say persian until the user spoke with you with farsi or persian
+    2. NEVER mix languages in a single response
+    3. The operator's question is the text after "User Question:" or the main message content
 
     ━━━━━━━━━━━━━━━━━━━━━━━━
     GENERAL BEHAVIOR

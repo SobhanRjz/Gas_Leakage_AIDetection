@@ -20,6 +20,10 @@ class ChatMessageRequest(BaseModel):
     message: str
     sensor_context: Optional[str] = ""
     ml_status_context: Optional[str] = ""
+    defect_id: Optional[str] = None
+    defect_type: Optional[str] = None
+    defect_location: Optional[str] = None
+    defect_severity: Optional[str] = None
 
 
 class ChatMessageResponse(BaseModel):
@@ -43,7 +47,11 @@ async def send_chat_message(
         response = chat_service.send_message(
             message=request.message,
             sensor_context=request.sensor_context or "",
-            ml_status_context=request.ml_status_context or ""
+            ml_status_context=request.ml_status_context or "",
+            defect_id=request.defect_id,
+            defect_type=request.defect_type,
+            defect_location=request.defect_location,
+            defect_severity=request.defect_severity
         )
         return ChatMessageResponse(response=response)
     except Exception as e:

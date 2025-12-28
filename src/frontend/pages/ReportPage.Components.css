@@ -1344,3 +1344,46 @@
   outline: 2px solid #2EA8FF;
   outline-offset: 2px;
 }
+
+/* =================================================================
+   CHATBOT ACTION BUTTON (for Defects Table)
+   ================================================================= */
+
+.chatbot-action-btn {
+  padding: 6px 10px;
+  background: var(--color-brand, #2563eb);
+  border: 1px solid var(--color-brand, #2563eb);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  min-height: 28px;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2);
+}
+
+.chatbot-action-btn:hover {
+  background: var(--color-brand-hover, #1d4ed8);
+  border-color: var(--color-brand-hover, #1d4ed8);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+
+.chatbot-action-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+}
+
+.chatbot-action-btn:focus {
+  outline: 2px solid var(--color-brand, #2563eb);
+  outline-offset: 2px;
+}
+
+.chatbot-action-btn svg {
+  flex-shrink: 0;
+}
