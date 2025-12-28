@@ -2,8 +2,8 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "127.0.0.1:28008:80"
+      - "127.0.0.1:28009:443"
     volumes:
       - ../nginx/nginx.local.conf:/etc/nginx/nginx.conf:ro
       - ../ssl:/etc/nginx/ssl:ro
