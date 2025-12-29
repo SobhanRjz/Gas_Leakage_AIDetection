@@ -4,7 +4,7 @@ services:
       context: ../../../src/backend
       dockerfile: ../../infra/docker/dockerfiles/Dockerfile.backend.dev
     ports:
-      - "8000:8000"
+      - "127.0.0.1:28002:8000"
     volumes:
       - ../../../src/backend:/app
     environment:
@@ -18,7 +18,7 @@ services:
       context: ../../../src/frontend
       dockerfile: ../../infra/docker/dockerfiles/Dockerfile.frontend.dev
     ports:
-      - "5173:5173"
+      - "127.0.0.1:28001:80"
     volumes:
       - ../../../src/frontend:/app
       - /app/node_modules
