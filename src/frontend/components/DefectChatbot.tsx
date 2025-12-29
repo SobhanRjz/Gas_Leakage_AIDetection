@@ -14,6 +14,8 @@ interface DefectChatbotProps {
   defectType: string;
   location: string;
   severity: string;
+  controlSystemSign?: string;
+  droneSign?: string;
   onClose: () => void;
 }
 
@@ -29,12 +31,15 @@ const DefectChatbot: React.FC<DefectChatbotProps> = ({
   defectType,
   location,
   severity,
+  controlSystemSign = "Unknown",
+  droneSign = "Unknown",
   onClose
 }) => {
   const { authService } = useAuth();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -43,15 +48,58 @@ const DefectChatbot: React.FC<DefectChatbotProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Initialize with a welcome message
+  // Fetch initial detailed message from backend
   useEffect(() => {
-    const welcomeMessage: ChatMessage = {
-      role: 'assistant',
-      content: `I'm here to help with **${defectId}** - ${defectType} at ${location}.\n\nSeverity: **${severity}**\n\nWhat would you like to know about fixing this issue?`,
-      timestamp: new Date()
+    const fetchInitialMessage = async () => {
+      setIsInitializing(true);
+      try {
+        const token = authService.getToken();
+        if (!token) {
+          throw new Error('Not authenticated');
+        }
+
+        const response = await fetch('/api/chat/initial-defect-message', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            defect_type: defectType,
+            location: location,
+            severity: severity,
+            control_system_sign: controlSystemSign,
+            drone_sign: droneSign
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch initial message');
+        }
+
+        const data: ChatServiceResponse = await response.json();
+        const initialMessage: ChatMessage = {
+          role: 'assistant',
+          content: data.response,
+          timestamp: new Date()
+        };
+        setMessages([initialMessage]);
+      } catch (err) {
+        console.error('Failed to fetch initial message:', err);
+        // Fallback to simple welcome message
+        const fallbackMessage: ChatMessage = {
+          role: 'assistant',
+          content: `I'm here to help with **${defectId}** - ${defectType} at ${location}.\n\nSeverity: **${severity}**\n\nWhat would you like to know about fixing this issue?`,
+          timestamp: new Date()
+        };
+        setMessages([fallbackMessage]);
+      } finally {
+        setIsInitializing(false);
+      }
     };
-    setMessages([welcomeMessage]);
-  }, [defectId, defectType, location, severity]);
+
+    fetchInitialMessage();
+  }, [defectId, defectType, location, severity, controlSystemSign, droneSign]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -119,7 +167,9 @@ const DefectChatbot: React.FC<DefectChatbotProps> = ({
         defect_id: defectId,
         defect_type: defectType,
         defect_location: location,
-        defect_severity: severity
+        defect_severity: severity,
+        control_system_sign: controlSystemSign,
+        drone_sign: droneSign
       })
     });
 
@@ -133,9 +183,10 @@ const DefectChatbot: React.FC<DefectChatbotProps> = ({
   };
 
   const quickQuestions = [
-    "What are the recommended repair steps?",
-    "How urgent is this issue?",
-    "What tools and materials are needed?"
+    "What are the step-by-step repair procedures?",
+    "What tools and materials do I need?",
+    "What safety precautions should I take?",
+    "How long will the repair take?"
   ];
 
   const handleQuickQuestion = (question: string) => {
@@ -159,7 +210,22 @@ const DefectChatbot: React.FC<DefectChatbotProps> = ({
         </div>
 
         <div className="defect-chatbot-messages">
-          {messages.length === 1 && (
+          {isInitializing && (
+            <div className="chatbot-message chatbot-message-assistant">
+              <div className="chatbot-message-content">
+                <div className="chatbot-typing-indicator">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <p style={{ marginTop: '8px', fontSize: '12px', color: '#666' }}>
+                  Loading defect analysis...
+                </p>
+              </div>
+            </div>
+          )}
+
+          {!isInitializing && messages.length === 1 && (
             <div className="quick-questions">
               {quickQuestions.map((question, index) => (
                 <button
@@ -174,7 +240,7 @@ const DefectChatbot: React.FC<DefectChatbotProps> = ({
             </div>
           )}
 
-          {messages.map((message, index) => (
+          {!isInitializing && messages.map((message, index) => (
             <div key={index} className={`chatbot-message chatbot-message-${message.role}`}>
               <div className="chatbot-message-content">
                 {message.role === 'assistant' ? (

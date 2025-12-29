@@ -1,18 +1,41 @@
 :root {
-  --primary-color: #2563eb;
-  --primary-dark: #1d4ed8;
-  --secondary-color: #95a5a6;
+  /* Modern Color Palette - Updated for 2025 */
+  --primary-color: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-light: #60a5fa;
+  --secondary-color: #8b5cf6;
   --success-color: #10b981;
   --warning-color: #f59e0b;
   --error-color: #ef4444;
+  --info-color: #06b6d4;
+  
+  /* Neutral Palette */
   --background-color: #f8fafc;
   --card-background: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
   --border-color: #e2e8f0;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --border-color-hover: #cbd5e1;
+  
+  /* Modern Shadows - Softer and more natural */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  
+  /* Modern Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* =================================================================
@@ -90,51 +113,93 @@
   --transition-slow: 0.3s ease;
 }
 
-/* Theme Variables */
+/* Theme Variables - Modern Light Theme */
 .theme-light {
-  --bg-gradient-start: #f8fafc;
-  --bg-gradient-end: #f1f5f9;
-  --app-background: #f8fafc;
+  /* Backgrounds - Softer gradients */
+  --bg-gradient-start: #ffffff;
+  --bg-gradient-end: #f8fafc;
+  --app-background: #fafbfc;
   --surface-background: #ffffff;
   --raised-card-background: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
+  --panel-background: rgba(255, 255, 255, 0.8);
+  
+  /* Text - Better contrast */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
   --text-muted: #94a3b8;
+  --text-inverse: #ffffff;
+  
+  /* Borders - Subtle */
   --border-color: #e2e8f0;
-  --primary-color: #2563eb;
-  --primary-hover: #1d4ed8;
-  --primary-pressed: #1e40af;
+  --border-color-light: #f1f5f9;
+  --border-color-strong: #cbd5e1;
+  
+  /* Interactive Colors */
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-pressed: #1d4ed8;
+  --primary-subtle: rgba(59, 130, 246, 0.1);
+  
+  /* Status Colors */
   --severity-major: #ef4444;
   --severity-minor: #f59e0b;
-  --severity-info: #0ea5e9;
+  --severity-info: #06b6d4;
   --severity-healthy: #10b981;
+  
+  /* Badge Colors */
   --badge-pt: #8b5cf6;
   --badge-ft: #3b82f6;
   --badge-tt: #10b981;
   --badge-seismo: #ec4899;
+  
+  /* Overlays */
+  --overlay-light: rgba(0, 0, 0, 0.05);
+  --overlay-medium: rgba(0, 0, 0, 0.1);
+  --overlay-strong: rgba(0, 0, 0, 0.2);
 }
 
 .theme-dark {
-  --bg-gradient-start: var(--color-bg);
-  --bg-gradient-end: var(--color-surface);
-  --app-background: var(--color-bg);
-  --surface-background: var(--color-surface);
-  --raised-card-background: var(--color-card);
-  --text-primary: var(--color-text-primary);
-  --text-secondary: var(--color-text-secondary);
-  --text-muted: var(--color-text-muted);
-  --border-color: var(--color-border);
-  --primary-color: var(--color-brand);
-  --primary-hover: var(--color-brand-hover);
-  --primary-pressed: var(--color-brand-pressed);
-  --severity-major: var(--color-severity-major);
-  --severity-minor: var(--color-severity-minor);
-  --severity-info: var(--color-severity-info);
-  --severity-healthy: var(--color-severity-healthy);
-  --badge-pt: var(--color-badge-pt);
-  --badge-ft: var(--color-badge-ft);
-  --badge-tt: var(--color-badge-tt);
-  --badge-seismo: var(--color-badge-seismo);
+  /* Backgrounds - Modern dark with depth */
+  --bg-gradient-start: #0a0e14;
+  --bg-gradient-end: #111827;
+  --app-background: #0f172a;
+  --surface-background: #1e293b;
+  --raised-card-background: #1e293b;
+  --panel-background: rgba(30, 41, 59, 0.8);
+  
+  /* Text - Optimized for dark mode */
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-inverse: #0f172a;
+  
+  /* Borders - Subtle in dark */
+  --border-color: rgba(148, 163, 184, 0.2);
+  --border-color-light: rgba(148, 163, 184, 0.1);
+  --border-color-strong: rgba(148, 163, 184, 0.3);
+  
+  /* Interactive Colors - Brighter for dark mode */
+  --primary-color: #60a5fa;
+  --primary-hover: #93c5fd;
+  --primary-pressed: #3b82f6;
+  --primary-subtle: rgba(96, 165, 250, 0.15);
+  
+  /* Status Colors - Adjusted for dark */
+  --severity-major: #f87171;
+  --severity-minor: #fbbf24;
+  --severity-info: #22d3ee;
+  --severity-healthy: #34d399;
+  
+  /* Badge Colors */
+  --badge-pt: #a78bfa;
+  --badge-ft: #60a5fa;
+  --badge-tt: #34d399;
+  --badge-seismo: #f472b6;
+  
+  /* Overlays */
+  --overlay-light: rgba(255, 255, 255, 0.05);
+  --overlay-medium: rgba(255, 255, 255, 0.1);
+  --overlay-strong: rgba(255, 255, 255, 0.15);
 }
 
 * {
@@ -149,13 +214,32 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--app-background);
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
   color: var(--text-primary);
   line-height: 1.6;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  transition: all 0.3s ease;
+  transition: background var(--transition-smooth), color var(--transition-base);
+}
+
+/* Modern scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color-strong);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
 }
 
 html {

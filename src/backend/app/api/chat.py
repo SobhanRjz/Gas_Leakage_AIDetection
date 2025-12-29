@@ -24,6 +24,17 @@ class ChatMessageRequest(BaseModel):
     defect_type: Optional[str] = None
     defect_location: Optional[str] = None
     defect_severity: Optional[str] = None
+    control_system_sign: Optional[str] = None
+    drone_sign: Optional[str] = None
+
+
+class InitialDefectMessageRequest(BaseModel):
+    """Request model for initial defect message."""
+    defect_type: str
+    location: str
+    severity: str
+    control_system_sign: Optional[str] = "Unknown"
+    drone_sign: Optional[str] = "Unknown"
 
 
 class ChatMessageResponse(BaseModel):
@@ -51,11 +62,35 @@ async def send_chat_message(
             defect_id=request.defect_id,
             defect_type=request.defect_type,
             defect_location=request.defect_location,
-            defect_severity=request.defect_severity
+            defect_severity=request.defect_severity,
+            control_system_sign=request.control_system_sign,
+            drone_sign=request.drone_sign
         )
         return ChatMessageResponse(response=response)
     except Exception as e:
         logger.error(f"Chat message failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Chat service error: {str(e)}")
+
+
+@router.post("/initial-defect-message", response_model=ChatMessageResponse)
+async def get_initial_defect_message(
+    request: InitialDefectMessageRequest,
+    current_user: User = Depends(get_current_user)
+) -> ChatMessageResponse:
+    """
+    Get initial detailed message for a defect when chat is opened.
+    """
+    try:
+        response = chat_service.get_initial_defect_message(
+            defect_type=request.defect_type,
+            location=request.location,
+            severity=request.severity,
+            control_system_sign=request.control_system_sign or "Unknown",
+            drone_sign=request.drone_sign or "Unknown"
+        )
+        return ChatMessageResponse(response=response)
+    except Exception as e:
+        logger.error(f"Initial defect message failed: {e}")
         raise HTTPException(status_code=500, detail=f"Chat service error: {str(e)}")
 
 

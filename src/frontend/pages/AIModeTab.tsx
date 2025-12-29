@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../services/AuthService';
+import { detectionService } from '../services/DetectionService';
 import './AIModeTab.css';
 
 // Types
@@ -91,6 +92,45 @@ const AIModeTab: React.FC<AIModeTabProps> = () => {
       throw new Error('Not authenticated');
     }
 
+    // Fetch current detection data to provide context
+    let sensorContext = '';
+    let mlStatusContext = '';
+    
+    try {
+      const stats = await detectionService.getOverviewStats();
+      
+      // Build sensor context
+      sensorContext = `Control System: ${stats.control_system.total} readings (${stats.control_system.critical} critical, ${stats.control_system.warning} warnings). `;
+      sensorContext += `Drone: ${stats.drone.total} data points (${stats.drone.videos} videos, ${stats.drone.images} images). `;
+      
+      // Build ML status context
+      if (stats.leakage_status.total_leakages > 0) {
+        mlStatusContext = `ALERT: ${stats.leakage_status.total_leakages} active leakage(s) detected. `;
+        mlStatusContext += `Control System Status: ${stats.leakage_status.control_system.status}. `;
+        mlStatusContext += `Drone Status: ${stats.leakage_status.drone.status}. `;
+        
+        // Add detection details
+        if (stats.leakage_status.control_system.detections.length > 0) {
+          mlStatusContext += `Control System Detections: `;
+          stats.leakage_status.control_system.detections.forEach((d, i) => {
+            mlStatusContext += `${i + 1}) ${d.defect_type} at ${d.location} (${d.sign}). `;
+          });
+        }
+        
+        if (stats.leakage_status.drone.detections.length > 0) {
+          mlStatusContext += `Drone Detections: `;
+          stats.leakage_status.drone.detections.forEach((d, i) => {
+            mlStatusContext += `${i + 1}) ${d.defect_type} at ${d.location} (${d.sign}). `;
+          });
+        }
+      } else {
+        mlStatusContext = 'All systems normal. No leakages detected.';
+      }
+    } catch (err) {
+      console.error('Failed to fetch detection context:', err);
+      // Continue without context
+    }
+
     const response = await fetch('/api/chat/send', {
       method: 'POST',
       headers: {
@@ -99,8 +139,8 @@ const AIModeTab: React.FC<AIModeTabProps> = () => {
       },
       body: JSON.stringify({
         message,
-        sensor_context: '',
-        ml_status_context: ''
+        sensor_context: sensorContext,
+        ml_status_context: mlStatusContext
       })
     });
 

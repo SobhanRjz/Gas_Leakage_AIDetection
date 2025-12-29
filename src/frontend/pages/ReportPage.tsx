@@ -1,15 +1,53 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { ThemeContext } from '../components/Header'
-import { ChevronDown, Pin, Check, Share2, Database, Plane, MessageCircle } from 'lucide-react'
+import { ChevronDown, Pin, Check, Share2, MessageCircle } from 'lucide-react'
 import DefectChatbot from '../components/DefectChatbot'
+import { getRiskLevel, MAX_DEFECT_REGISTRY_SIZE } from '../utils/detectionUtils'
+import { detectionService, DetectionEvent } from '../services/DetectionService'
+import { useAuth } from '../services/AuthService'
 import './ReportPage.css'
 
+// Convert backend DetectionEvent to frontend DefectRegistryItem
+interface DefectRegistryItem {
+  id: string
+  defectType: string
+  location: string
+  riskLevel: 'critical' | 'warning' | 'low'
+  riskLabel: string
+  riskIcon: string
+  detectedDate: string
+  lastDetected?: string
+  status: 'pending' | 'progress' | 'resolved'
+  controlSystemSign: string
+  controlSystemSource: string
+  droneSign: string
+  droneSource: string
+  aiConfidence: number
+}
+
+const convertDetectionEvent = (event: DetectionEvent): DefectRegistryItem => {
+  const riskInfo = getRiskLevel(event.defect_type)
+  return {
+    id: event.id,
+    defectType: event.defect_type,
+    location: event.location,
+    riskLevel: event.risk_level,
+    riskLabel: riskInfo.label,
+    riskIcon: riskInfo.icon,
+    detectedDate: event.detected_date,
+    lastDetected: event.last_detected,
+    status: event.status,
+    controlSystemSign: event.control_system_sign,
+    controlSystemSource: event.control_system_source,
+    droneSign: event.drone_sign,
+    droneSource: event.drone_source,
+    aiConfidence: event.ai_confidence
+  }
+}
+
 interface AccordionState {
-  control: boolean;
-  drone: boolean;
   defects: boolean;
-  maintenance: boolean;
 }
 
 interface ReportAccordionProps {
@@ -69,15 +107,14 @@ const ReportAccordion: React.FC<ReportAccordionProps> = ({
  */
 const ReportPage: React.FC = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { isDarkTheme } = React.useContext(ThemeContext)
-  const [reportType, setReportType] = useState('control')
+  const { authState } = useAuth()
+  const [reportType, setReportType] = useState('defects')
   const [dateRange, setDateRange] = useState('30days')
   const [isGenerating, setIsGenerating] = useState(false)
   const [accordionState, setAccordionState] = useState<AccordionState>({
-    control: true,
-    drone: false,
-    defects: false,
-    maintenance: false
+    defects: true
   })
   const [selectedItems, setSelectedItems] = useState<string[]>([])
   const [selectedAccordionItems, setSelectedAccordionItems] = useState<string[]>([])
@@ -89,7 +126,7 @@ const ReportPage: React.FC = () => {
   const [toast, setToast] = useState<{ show: boolean; type: 'success' | 'error'; message: string; actions?: string[] } | null>(null)
   const [progress, setProgress] = useState(0)
   const [legendExpanded, setLegendExpanded] = useState(false)
-  const [sortBy, setSortBy] = useState('severity-desc')
+  const [sortBy, setSortBy] = useState('date-desc') // Default to most recently detected first
 
   // State management for loading, empty, and error states
   const [isLoading, setIsLoading] = useState(false)
@@ -102,45 +139,141 @@ const ReportPage: React.FC = () => {
     type: string;
     location: string;
     severity: string;
+    controlSystemSign: string;
+    droneSign: string;
   } | null>(null)
 
-  // Mock data for demonstration - in real app this would come from API
-  const mockData = {
-    control: isEmpty ? [] : [
-      // Major/Sudden Leak
-      { id: 'control-1', text: 'High pressure drop detected in Sector A-7, KM 125.3. PT sensor reading: 15 PSI below operational threshold. Immediate inspection required.', sensor: 'pt', time: '02:15:34', location: 'Sector A-7', confidence: 95 },
-      { id: 'control-2', text: 'Imbalance mass flow detected in Sector B-12, KM 89.7. FT sensor indicates 12% mass imbalance over 45 minutes. Critical leak suspected.', sensor: 'ft', time: '02:00:12', location: 'Sector B-12', confidence: 92 },
-      // Minor/Gradual Leak
-      { id: 'control-3', text: 'Small, persistent deviation in mass balance in Sector C-3, KM 234.1. FT sensor shows 3% cumulative deviation over 24 hours. Gradual leak pattern.', sensor: 'ft', time: '01:45:23', location: 'Sector C-3', confidence: 76 },
-      { id: 'control-4', text: 'Slow pressure decline detected in Sector D-5, KM 67.8. PT sensor indicates 2 PSI drop over 6 hours. Monitor for escalation.', sensor: 'pt', time: '03:22:14', location: 'Sector D-5', confidence: 68 },
-      // Corrosion & Erosion
-      { id: 'control-5', text: 'Decrease in pressure detected in Sector E-9, KM 145.2. PT sensor reading: 8 PSI below baseline. Possible corrosion or erosion.', sensor: 'pt', time: '04:11:37', location: 'Sector E-9', confidence: 71 },
-      // Insulation/Coating Failure
-      { id: 'control-6', text: 'Increased heat loss detected in Sector F-2, KM 89.5. TT sensor indicates 15°F temperature differential. Insulation failure suspected.', sensor: 'tt', time: '02:33:48', location: 'Sector F-2', confidence: 83 },
-      // Poor Pipe Support
-      { id: 'control-7', text: 'Unusual vibrations detected in Sector A-3, KM 234.7. Seismometer sensor reading: 0.8g acceleration. Pipe support failure indicated.', sensor: 'seismometer', time: '01:18:56', location: 'Sector A-3', confidence: 79 }
-    ],
-    drone: isEmpty ? [] : [
-      // Major/Sudden Leak
-      { id: 'drone-1', text: 'Direct visual sighting of spill in Sector A-7, KM 125.3. Visible spectrum camera detected liquid spill at pipeline section. Ground team dispatched.', sensor: 'Visible Spectrum Camera', time: '02:18:45', location: 'Sector A-7', confidence: 98 },
-      { id: 'drone-2', text: 'Detection of gas cloud in Sector B-12, KM 89.7. Spectroscopic sensor indicates hydrocarbon leak. Concentration levels elevated.', sensor: 'Spectroscopic Sensor', time: '02:05:33', location: 'Sector B-12', confidence: 82 },
-      { id: 'drone-3', text: 'Distinct thermal anomaly on the ground in Sector C-3, KM 234.1. Thermal imaging camera detected ground thermal signature.', sensor: 'Thermal Imaging Camera', time: '01:52:17', location: 'Sector C-3', confidence: 71 },
-      // Minor/Gradual Leak
-      { id: 'drone-4', text: 'Gradual discoloration detected in Sector D-5, KM 67.8. Visible spectrum camera identified soil staining pattern indicating slow leak.', sensor: 'Visible Spectrum Camera', time: '03:12:22', location: 'Sector D-5', confidence: 87 },
-      { id: 'drone-5', text: 'Consistently elevated gas concentration at specific point in Sector E-9, KM 145.2. Spectroscopic sensor monitoring shows persistent readings.', sensor: 'Spectroscopic Sensor', time: '03:08:41', location: 'Sector E-9', confidence: 76 },
-      { id: 'drone-6', text: 'Long-term changes in soil temperature in Sector F-2, KM 89.5. Thermal imaging camera detected gradual warming pattern over 48 hours.', sensor: 'Thermal Imaging Camera', time: '02:45:33', location: 'Sector F-2', confidence: 68 },
-      // Corrosion & Erosion
-      { id: 'drone-7', text: 'Visual signs of rust and coating damage in Sector A-3, KM 234.7. Visible spectrum camera identified corrosion on exposed pipe section.', sensor: 'Visible Spectrum Camera', time: '01:28:15', location: 'Sector A-3', confidence: 91 },
-      // Mechanical Damage
-      { id: 'drone-8', text: 'Clear identification of damage: dents detected in Sector B-8, KM 156.3. Visible spectrum camera captured mechanical deformation on pipeline.', sensor: 'visible', time: '00:55:42', location: 'Sector B-8', confidence: 94 },
-      // Insulation/Coating Failure
-      { id: 'drone-9', text: 'Detection of insulation failures in Sector C-7, KM 78.9. Visible spectrum camera identified damaged coating and exposed insulation.', sensor: 'visible', time: '04:17:28', location: 'Sector C-7', confidence: 89 },
-      { id: 'drone-10', text: 'Hot spots detected along the pipe in Sector D-1, KM 112.4. Thermal imaging camera identified temperature anomalies indicating insulation failure.', sensor: 'Thermal Imaging Camera', time: '03:33:19', location: 'Sector D-1', confidence: 73 },
-      // Poor Pipe Support
-      { id: 'drone-11', text: 'Visual identification of loose pipe supports in Sector E-4, KM 198.6. Visible spectrum camera detected shifted and broken support structures.', sensor: 'visible', time: '02:29:07', location: 'Sector E-4', confidence: 85 },
-      { id: 'drone-12', text: 'Identification of soil erosion under the pipe in Sector F-6, KM 167.8. Visible spectrum camera captured subsidence and soil movement.', sensor: 'visible', time: '01:14:53', location: 'Sector F-6', confidence: 79 }
-    ]
+  // Defect Registry State - Persistent list that grows with new detections (max 15)
+  const [defectRegistry, setDefectRegistry] = useState<DefectRegistryItem[]>([])
+  const [sortedDefectRegistry, setSortedDefectRegistry] = useState<DefectRegistryItem[]>([])
+
+  // Fetch detection events from backend
+  const fetchDetectionEvents = async () => {
+    // Check if user is authenticated
+    if (!authState.isAuthenticated) {
+      console.log('User not authenticated, redirecting to login...')
+      navigate('/login')
+      return
+    }
+
+    try {
+      setIsLoading(true)
+      setError(null)
+      const events = await detectionService.getDetectionEvents(MAX_DEFECT_REGISTRY_SIZE)
+      const convertedEvents = events.map(convertDetectionEvent)
+      setDefectRegistry(convertedEvents)
+      setIsEmpty(convertedEvents.length === 0)
+    } catch (err) {
+      console.error('Failed to fetch detection events:', err)
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch detection events'
+      
+      // If unauthorized, redirect to login
+      if (errorMessage.includes('Unauthorized') || errorMessage.includes('401')) {
+        console.log('Unauthorized access, redirecting to login...')
+        navigate('/login')
+        return
+      }
+      
+      setError(errorMessage)
+      setDefectRegistry([])
+      setIsEmpty(true)
+    } finally {
+      setIsLoading(false)
+    }
   }
+
+  // Initialize defect registry on mount and whenever user navigates to this page
+  useEffect(() => {
+    // Wait a bit for auth to initialize
+    const timer = setTimeout(() => {
+      fetchDetectionEvents()
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [authState.isAuthenticated, location.pathname]) // Re-fetch when pathname changes (user navigates to this page)
+
+  // Auto-refresh if enabled - periodically fetch new detections
+  useEffect(() => {
+    if (autoRefresh) {
+      const refreshInterval = setInterval(fetchDetectionEvents, 15 * 60 * 1000) // 15 minutes
+      return () => clearInterval(refreshInterval)
+    }
+  }, [autoRefresh])
+
+  // Sort defect registry based on sortBy state
+  // Uses lastDetected timestamp (when system found defect) for date-based sorting
+  useEffect(() => {
+    const sorted = [...defectRegistry]
+
+    // Helper to get sort timestamp - uses lastDetected if available, otherwise detectedDate
+    const getSortTimestamp = (item: DefectRegistryItem): number => {
+      if (item.lastDetected) {
+        return new Date(item.lastDetected).getTime()
+      }
+      return new Date(item.detectedDate).getTime()
+    }
+
+    switch (sortBy) {
+      case 'severity-desc':
+        // Critical > Warning > Low, then by lastDetected/date (newest first)
+        sorted.sort((a, b) => {
+          const riskOrder = { critical: 0, warning: 1, low: 2 }
+          const riskDiff = riskOrder[a.riskLevel] - riskOrder[b.riskLevel]
+          if (riskDiff !== 0) return riskDiff
+          return getSortTimestamp(b) - getSortTimestamp(a)
+        })
+        break
+      case 'severity-asc':
+        // Low > Warning > Critical, then by lastDetected/date (newest first)
+        sorted.sort((a, b) => {
+          const riskOrder = { critical: 2, warning: 1, low: 0 }
+          const riskDiff = riskOrder[a.riskLevel] - riskOrder[b.riskLevel]
+          if (riskDiff !== 0) return riskDiff
+          return getSortTimestamp(b) - getSortTimestamp(a)
+        })
+        break
+      case 'date-desc':
+        // Sort by lastDetected first (most recently detected by system comes first)
+        // This ensures defects just found appear at top of the table
+        sorted.sort((a, b) => {
+          // If both have lastDetected, sort by lastDetected (most recent first)
+          if (a.lastDetected && b.lastDetected) {
+            return new Date(b.lastDetected).getTime() - new Date(a.lastDetected).getTime()
+          }
+          // If only a has lastDetected, a comes first (recently detected)
+          if (a.lastDetected && !b.lastDetected) {
+            return -1
+          }
+          // If only b has lastDetected, b comes first
+          if (!a.lastDetected && b.lastDetected) {
+            return 1
+          }
+          // Neither has lastDetected, sort by detectedDate (most recent first)
+          return new Date(b.detectedDate).getTime() - new Date(a.detectedDate).getTime()
+        })
+        break
+      case 'date-asc':
+        sorted.sort((a, b) => getSortTimestamp(a) - getSortTimestamp(b))
+        break
+      case 'confidence-desc':
+        sorted.sort((a, b) => {
+          const confidenceDiff = b.aiConfidence - a.aiConfidence
+          if (confidenceDiff !== 0) return confidenceDiff
+          return getSortTimestamp(b) - getSortTimestamp(a)
+        })
+        break
+      case 'confidence-asc':
+        sorted.sort((a, b) => {
+          const confidenceDiff = a.aiConfidence - b.aiConfidence
+          if (confidenceDiff !== 0) return confidenceDiff
+          return getSortTimestamp(b) - getSortTimestamp(a)
+        })
+        break
+      default:
+        break
+    }
+
+    setSortedDefectRegistry(sorted)
+  }, [defectRegistry, sortBy])
 
   // Debounce search term
   useEffect(() => {
@@ -303,37 +436,18 @@ const ReportPage: React.FC = () => {
   const renderReportContent = () => {
     return (
       <div className="accordion-container">
-        {reportType === 'control' && (
-          <ReportAccordion
-            title="Control System Data"
-            icon={<Database className="text-brand" size={18} />}
-            count={mockData.control.length}
-            trend={{ bars: [1, 1, -1, 1], label: "Last 30d" }}
-            isExpanded={accordionState.control}
-            onToggle={() => toggleAccordion('control')}
-          >
-            {renderAccordionItems(mockData.control)}
-          </ReportAccordion>
-        )}
-
-        {reportType === 'drone' && (
-          <ReportAccordion
-            title="Drone Data"
-            icon={<Plane className="text-brand" size={18} />}
-            count={mockData.drone.length}
-            trend={{ bars: [1, 1, 1, -1], label: "Last 30d" }}
-            isExpanded={accordionState.drone}
-            onToggle={() => toggleAccordion('drone')}
-          >
-            {renderAccordionItems(mockData.drone)}
-          </ReportAccordion>
-        )}
-
         {reportType === 'defects' && (
           <div className="industrial-panel">
             <div className="panel-header">
               <h2 className="panel-title">Defects Registry</h2>
-              
+              <div className="panel-header-info">
+                <span className="info-badge new-badge">
+                  {sortedDefectRegistry.filter(d => d.lastDetected !== undefined).length} Just Detected
+                </span>
+                <span className="info-badge">
+                  {sortedDefectRegistry.length} / {MAX_DEFECT_REGISTRY_SIZE} Defects
+                </span>
+              </div>
             </div>
             <div className="panel-content">
               <div className="data-table-container">
@@ -343,161 +457,103 @@ const ReportPage: React.FC = () => {
                       <th>ID</th>
                       <th>Type</th>
                       <th>Location</th>
-                      <th>Severity</th>
+                      <th>Risk Level</th>
+                      <th>AI Confidence</th>
                       <th>Detected</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td><span className="id-badge">DEF-001</span></td>
-                      <td>Corrosion</td>
-                      <td>Sector A-7, KM 125.3</td>
-                      <td><span className="severity-badge critical">Critical</span></td>
-                      <td>2024-12-15</td>
-                      <td><span className="status-badge pending">Pending</span></td>
-                      <td>
-                        <button 
-                          className="chatbot-action-btn" 
-                          onClick={() => setActiveChatbot({ id: 'DEF-001', type: 'Corrosion', location: 'Sector A-7, KM 125.3', severity: 'Critical' })}
-                          aria-label="Get AI recommendations for this defect"
-                          title="Get AI recommendations"
-                        >
-                          <MessageCircle size={16} />
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span className="id-badge">DEF-002</span></td>
-                      <td>Crack</td>
-                      <td>Sector B-12, KM 89.7</td>
-                      <td><span className="severity-badge warning">Medium</span></td>
-                      <td>2024-12-14</td>
-                      <td><span className="status-badge progress">In Progress</span></td>
-                      <td>
-                        <button 
-                          className="chatbot-action-btn" 
-                          onClick={() => setActiveChatbot({ id: 'DEF-002', type: 'Crack', location: 'Sector B-12, KM 89.7', severity: 'Medium' })}
-                          aria-label="Get AI recommendations for this defect"
-                          title="Get AI recommendations"
-                        >
-                          <MessageCircle size={16} />
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span className="id-badge">DEF-003</span></td>
-                      <td>Dent</td>
-                      <td>Sector C-3, KM 234.1</td>
-                      <td><span className="severity-badge info">Low</span></td>
-                      <td>2024-12-13</td>
-                      <td><span className="status-badge resolved">Resolved</span></td>
-                      <td>
-                        <button 
-                          className="chatbot-action-btn" 
-                          onClick={() => setActiveChatbot({ id: 'DEF-003', type: 'Dent', location: 'Sector C-3, KM 234.1', severity: 'Low' })}
-                          aria-label="Get AI recommendations for this defect"
-                          title="Get AI recommendations"
-                        >
-                          <MessageCircle size={16} />
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span className="id-badge">DEF-004</span></td>
-                      <td>Corrosion</td>
-                      <td>Sector A-9, KM 145.8</td>
-                      <td><span className="severity-badge critical">Critical</span></td>
-                      <td>2024-12-12</td>
-                      <td><span className="status-badge pending">Pending</span></td>
-                      <td>
-                        <button 
-                          className="chatbot-action-btn" 
-                          onClick={() => setActiveChatbot({ id: 'DEF-004', type: 'Corrosion', location: 'Sector A-9, KM 145.8', severity: 'Critical' })}
-                          aria-label="Get AI recommendations for this defect"
-                          title="Get AI recommendations"
-                        >
-                          <MessageCircle size={16} />
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span className="id-badge">DEF-005</span></td>
-                      <td>Leak</td>
-                      <td>Sector B-5, KM 67.2</td>
-                      <td><span className="severity-badge critical">Critical</span></td>
-                      <td>2024-12-10</td>
-                      <td><span className="status-badge progress">In Progress</span></td>
-                      <td>
-                        <button 
-                          className="chatbot-action-btn" 
-                          onClick={() => setActiveChatbot({ id: 'DEF-005', type: 'Leak', location: 'Sector B-5, KM 67.2', severity: 'Critical' })}
-                          aria-label="Get AI recommendations for this defect"
-                          title="Get AI recommendations"
-                        >
-                          <MessageCircle size={16} />
-                        </button>
-                      </td>
-                    </tr>
+                    {sortedDefectRegistry.length === 0 ? (
+                      <tr>
+                        <td colSpan={8} style={{ textAlign: 'center', padding: '2rem' }}>
+                          <div className="empty-state">
+                            <div className="empty-state-icon">✓</div>
+                            <div className="empty-state-title">No Confirmed Defects</div>
+                            <div className="empty-state-description">
+                              No defects detected by both Control System and Drone surveillance.
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : (
+                      sortedDefectRegistry.map((defect) => {
+                        // Check if defect was just detected by system (has lastDetected timestamp)
+                        const isJustDetected = defect.lastDetected !== undefined
+                        // Check if defect was detected recently (within last 7 days)
+                        const isRecent = isJustDetected || (new Date().getTime() - new Date(defect.detectedDate).getTime()) < (7 * 24 * 60 * 60 * 1000)
+                        return (
+                        <tr key={defect.id} className={`${isRecent ? 'recent-detection' : ''}`}>
+                          <td>
+                            <div className="defect-type-cell">
+                              <div className="defect-type-name">{defect.defectType}</div>
+                              <div className="defect-sources">
+                                <span className="source-mini" title={`Control System: ${defect.controlSystemSource}`}>
+                                  🎛️ {defect.controlSystemSource}
+                                </span>
+                                <span className="source-mini" title={`Drone: ${defect.droneSource}`}>
+                                  🚁 {defect.droneSource}
+                                </span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>{defect.location}</td>
+                          <td>
+                            <span className={`severity-badge ${defect.riskLevel}`}>
+                              {defect.riskIcon} {defect.riskLabel}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="confidence-cell">
+                              <div className="confidence-bar-container">
+                                <div 
+                                  className="confidence-bar-fill" 
+                                  style={{ width: `${defect.aiConfidence}%` }}
+                                ></div>
+                              </div>
+                              <span className="confidence-value">{defect.aiConfidence}%</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="date-cell">
+                              <span className="detected-date">{defect.detectedDate}</span>
+                              {isJustDetected && (
+                                <span className="last-detected-time" title="System detection time">
+                                  {new Date(defect.lastDetected!).toLocaleTimeString()}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td>
+                            <span className={`status-badge ${defect.status}`}>
+                              {defect.status === 'pending' ? 'Pending' : 
+                               defect.status === 'progress' ? 'In Progress' : 'Resolved'}
+                            </span>
+                          </td>
+                          <td>
+                            <button
+                              className="chatbot-action-btn"
+                              onClick={() => setActiveChatbot({ 
+                                id: defect.id, 
+                                type: defect.defectType, 
+                                location: defect.location, 
+                                severity: defect.riskLabel,
+                                controlSystemSign: defect.controlSystemSign,
+                                droneSign: defect.droneSign
+                              })}
+                              aria-label="Get AI recommendations for this defect"
+                              title="Get AI recommendations"
+                            >
+                              <MessageCircle size={16} />
+                            </button>
+                          </td>
+                        </tr>
+                        )
+                      })
+                    )}
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {reportType === 'maintenance' && (
-          <div className="industrial-panel">
-            <div className="panel-header">
-              <h2 className="panel-title">Maintenance Schedule</h2>
-            </div>
-            <div className="panel-content">
-              <div className="maintenance-timeline">
-                <div className="timeline-item">
-                  <div className="timeline-marker upcoming"></div>
-                  <div className="timeline-content">
-                    <div className="timeline-header">
-                      <h4>Annual Integrity Assessment</h4>
-                      <span className="timeline-date">2025-01-15</span>
-                    </div>
-                    <p>Complete pipeline integrity assessment with ultrasonic testing and visual inspection.</p>
-                    <div className="timeline-meta">
-                      <span className="timeline-tag">High Priority</span>
-                      <span className="timeline-duration">5 days</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="timeline-item">
-                  <div className="timeline-marker upcoming"></div>
-                  <div className="timeline-content">
-                    <div className="timeline-header">
-                      <h4>Corrosion Monitoring</h4>
-                      <span className="timeline-date">2025-02-01</span>
-                    </div>
-                    <p>Corrosion rate analysis in high-risk sectors with protective coating evaluation.</p>
-                    <div className="timeline-meta">
-                      <span className="timeline-tag">Medium Priority</span>
-                      <span className="timeline-duration">3 days</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="timeline-item">
-                  <div className="timeline-marker completed"></div>
-                  <div className="timeline-content">
-                    <div className="timeline-header">
-                      <h4>Valve Maintenance</h4>
-                      <span className="timeline-date">2024-12-10</span>
-                    </div>
-                    <p>Quarterly valve inspection and pressure test at all critical junctions.</p>
-                    <div className="timeline-meta">
-                      <span className="timeline-tag completed">Completed</span>
-                      <span className="timeline-duration">2 days</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -578,10 +634,7 @@ const ReportPage: React.FC = () => {
                     onChange={(e) => setReportType(e.target.value)}
                     className="enhanced-select"
                   >
-                    <option value="control">Control System Data</option>
-                    <option value="drone">Drone Data</option>
                     <option value="defects">Defects Registry</option>
-                    <option value="maintenance">Maintenance Schedule</option>
                   </select>
                 </div>
 
@@ -710,7 +763,7 @@ const ReportPage: React.FC = () => {
           <div className="unified-toolbar">
             <div className="toolbar-left">
               <span className="summary-text">
-                {selectedItems.length > 0 ? `${selectedItems.length} selected` : 'Showing 256 items'}
+                {selectedItems.length > 0 ? `${selectedItems.length} selected` : `Showing ${sortedDefectRegistry.length} confirmed defect${sortedDefectRegistry.length !== 1 ? 's' : ''}`}
               </span>
               <div className="filter-chips">
                 <button
@@ -720,7 +773,7 @@ const ReportPage: React.FC = () => {
                   aria-pressed={activeFilters.includes('Critical')}
                   aria-label="Toggle Critical severity filter"
                 >
-                  Critical (3)
+                  Critical ({sortedDefectRegistry.filter(d => d.riskLevel === 'critical').length})
                 </button>
                 <button
                   className={`filter-chip severity-warning ${activeFilters.includes('Warning') ? 'active' : ''}`}
@@ -729,7 +782,16 @@ const ReportPage: React.FC = () => {
                   aria-pressed={activeFilters.includes('Warning')}
                   aria-label="Toggle Warning severity filter"
                 >
-                  Warning (15)
+                  Medium ({sortedDefectRegistry.filter(d => d.riskLevel === 'warning').length})
+                </button>
+                <button
+                  className={`filter-chip severity-info ${activeFilters.includes('Low') ? 'active' : ''}`}
+                  onClick={() => toggleFilter('Low')}
+                  disabled={selectedItems.length > 0}
+                  aria-pressed={activeFilters.includes('Low')}
+                  aria-label="Toggle Low severity filter"
+                >
+                  Low ({sortedDefectRegistry.filter(d => d.riskLevel === 'low').length})
                 </button>
               </div>
             </div>
@@ -740,10 +802,12 @@ const ReportPage: React.FC = () => {
                 className="sort-select"
                 disabled={selectedItems.length > 0}
               >
-                <option value="severity-desc">Sort by: Severity desc</option>
-                <option value="severity-asc">Sort by: Severity asc</option>
-                <option value="date-desc">Sort by: Date desc</option>
-                <option value="date-asc">Sort by: Date asc</option>
+                <option value="date-desc">Sort by: Last Detected (Recently Found First)</option>
+                <option value="date-asc">Sort by: Last Detected (Oldest First)</option>
+                <option value="severity-desc">Sort by: Risk Level (High to Low)</option>
+                <option value="severity-asc">Sort by: Risk Level (Low to High)</option>
+                <option value="confidence-desc">Sort by: AI Confidence (High to Low)</option>
+                <option value="confidence-asc">Sort by: AI Confidence (Low to High)</option>
               </select>
               <button
                 className="toolbar-action-btn"
@@ -820,6 +884,8 @@ const ReportPage: React.FC = () => {
           defectType={activeChatbot.type}
           location={activeChatbot.location}
           severity={activeChatbot.severity}
+          controlSystemSign={activeChatbot.controlSystemSign}
+          droneSign={activeChatbot.droneSign}
           onClose={() => setActiveChatbot(null)}
         />
       )}

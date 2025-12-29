@@ -262,12 +262,6 @@
   box-shadow: 0 8px 32px rgba(14, 165, 233, 0.3);
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-}
-
 .stat-item {
   text-align: center;
 }

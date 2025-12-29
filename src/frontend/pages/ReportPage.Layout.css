@@ -54,7 +54,8 @@
   justify-content: space-between;
   width: 100%;
   gap: var(--space-lg);
-  padding: 0.75rem var(--page-gutter); /* NEW: align with page gutters */
+  padding: 1rem var(--page-gutter); /* Increased padding for better breathing room */
+  min-height: 64px; /* Consistent header height */
 }
 
 .report-page-title {
@@ -63,6 +64,13 @@
   gap: var(--space-sm);
   margin: 0;
   flex-shrink: 0;
+  font-size: 1.75rem; /* Larger, more prominent title */
+  font-weight: 700;
+  letter-spacing: -0.02em; /* Tighter tracking for modern look */
+  background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-brand) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Optional: remove emoji bullet on title for a cleaner look */
@@ -77,36 +85,59 @@
   flex-shrink: 0;
 }
 
-/* Enhanced Button Styles */
+/* Enhanced Button Styles - Modern Design */
 .action-btn {
-  padding: var(--space-xs) var(--space-md);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
-  border-radius: var(--radius-md);
-  transition: var(--transition-normal);
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: none; /* Remove uppercase for modern look */
+  letter-spacing: 0.01em;
+  border-radius: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 32px;
+  gap: 0.5rem;
+  min-height: 40px;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.action-btn:hover::before {
+  left: 100%;
 }
 
 .action-btn.primary {
-  background: var(--color-brand);
-  color: var(--color-text-primary);
+  background: linear-gradient(135deg, var(--color-brand) 0%, #1D4ED8 100%);
+  color: white;
   border-color: var(--color-brand);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
 .action-btn.primary:hover:not(:disabled) {
-  background: var(--color-brand-hover);
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
   border-color: var(--color-brand-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+}
+
+.action-btn.primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
 .action-btn.primary:disabled {
@@ -120,26 +151,28 @@
   background: transparent;
   color: var(--color-brand);
   border-color: var(--color-brand);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .action-btn.secondary:hover {
   background: var(--color-brand-subtle);
   border-color: var(--color-brand-hover);
   color: var(--color-brand-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
 }
 
 /* Row 2: chips/status bar, visually part of header */
 .report-system-bar {
-  padding: 0.5rem var(--page-gutter);  /* NEW: align with page gutters */
-  border-top: 1px solid var(--color-border-subtle); /* subtle separation */
-  background: transparent;             /* keep same surface */
+  padding: 0.75rem var(--page-gutter);  /* Increased padding */
+  border-top: 1px solid var(--color-border-subtle);
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.01) 100%); /* Subtle depth */
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
+  min-height: 48px; /* Consistent height */
 }
 
 .system-status-chips {
@@ -149,32 +182,49 @@
   flex-wrap: wrap;
 }
 
-/* Smaller, quieter chips */
+/* Smaller, quieter chips with better visual design */
 .system-chip {
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
-  padding: 0.25rem 0.6rem;
+  padding: 0.375rem 0.875rem; /* Better padding */
   background: var(--color-surface);
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-normal);
+  border-radius: 20px; /* Fully rounded pill shape */
+  font-size: 0.8125rem; /* Slightly larger for readability */
+  font-weight: 500; /* Medium weight */
   cursor: pointer;
-  transition: var(--transition-normal);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth easing */
   white-space: nowrap;
-  min-height: 26px;
-  box-shadow: none;
+  min-height: 32px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.system-chip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.system-chip:hover::before {
+  left: 100%;
 }
 
 .system-chip:hover,
 .system-chip:focus {
   background: var(--color-brand);
-  color: var(--color-text-primary);
+  color: white;
   border-color: var(--color-brand);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
 .system-chip::before {
@@ -233,15 +283,33 @@
 .report-config-sidebar .industrial-panel {
   background: var(--color-card);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  transition: var(--transition-slow);
+  border-radius: 12px; /* More rounded corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+.report-config-sidebar .industrial-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-brand) 0%, var(--color-severity-healthy) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .report-config-sidebar .industrial-panel:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
   border-color: var(--color-brand);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+}
+
+.report-config-sidebar .industrial-panel:hover::before {
+  opacity: 1;
 }
 
 /* Main View Layer */
@@ -289,33 +357,59 @@
 
 /* Enhanced Form Elements */
 .config-section {
-  padding: var(--space-md) 0;
+  padding: 1.25rem 0;
   border-bottom: 1px solid var(--color-border-subtle);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.config-section:first-child {
+  padding-top: 0;
 }
 
 .config-section:last-child {
   border-bottom: none;
+  padding-bottom: 0;
+}
+
+.config-section:hover {
+  padding-left: 0.5rem;
+}
+
+.config-section:hover::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--color-brand);
+  border-radius: 2px;
 }
 
 .config-section-title {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
   line-height: 1.3;
-  margin-bottom: var(--space-md);
+  margin-bottom: 0.875rem;
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .config-section-title::before {
   content: '';
-  width: 4px;
-  height: 12px;
+  width: 6px;
+  height: 6px;
   background: var(--color-brand);
-  border-radius: 2px;
+  border-radius: 50%;
   flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 /* Enhanced Select Styling */
@@ -417,46 +511,76 @@
   min-height: 40px;
 }
 
-/* Filter Tags */
+/* Filter Tags - Enhanced Design */
 .filter-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xs);
-  margin-top: var(--space-sm);
+  gap: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .filter-tag {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-sm);
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  font-size: var(--font-size-xs);
+  border: 1.5px solid var(--color-border);
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--color-text-secondary);
   cursor: pointer;
-  transition: var(--transition-normal);
-  min-height: 28px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.filter-tag::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.filter-tag:hover::after {
+  left: 100%;
 }
 
 .filter-tag:hover,
 .filter-tag:focus {
   background: var(--color-brand);
-  color: var(--color-text-primary);
+  color: white;
   border-color: var(--color-brand);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
 .filter-tag.active {
   background: var(--color-brand);
-  color: var(--color-text-primary);
+  color: white;
   border-color: var(--color-brand);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
 }
 
-.filter-tag::before {
-  content: '×';
-  font-size: 1rem;
-  opacity: 0.6;
+.filter-tag.active::before {
+  content: '✓';
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.filter-tag:not(.active)::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  border-radius: 50%;
+  opacity: 0.5;
 }
 
 /* Segmented Control for Export */

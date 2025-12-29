@@ -2,9 +2,10 @@
 
 import httpx
 import logging
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from datetime import datetime
 from app.core.config import settings
+from app.services.defect_knowledge import DefectKnowledge
 
 
 class ChatConfig:
@@ -24,15 +25,34 @@ class ChatService:
         self.logger = logger
         self.system_prompt = self._get_system_prompt()
 
+    def get_initial_defect_message(
+        self,
+        defect_type: str,
+        location: str,
+        severity: str,
+        control_system_sign: str = "Unknown",
+        drone_sign: str = "Unknown"
+    ) -> str:
+        """Get initial detailed message for a defect"""
+        return DefectKnowledge.get_initial_chat_message(
+            defect_type=defect_type,
+            location=location,
+            severity=severity,
+            control_sign=control_system_sign,
+            drone_sign=drone_sign
+        )
+    
     def send_message(
         self, 
         message: str, 
         sensor_context: str = "", 
         ml_status_context: str = "",
-        defect_id: str = None,
-        defect_type: str = None,
-        defect_location: str = None,
-        defect_severity: str = None
+        defect_id: Optional[str] = None,
+        defect_type: Optional[str] = None,
+        defect_location: Optional[str] = None,
+        defect_severity: Optional[str] = None,
+        control_system_sign: Optional[str] = None,
+        drone_sign: Optional[str] = None
     ) -> str:
         """Send chat message with context and return response."""
         try:
@@ -48,38 +68,13 @@ class ChatService:
             # Build defect context if defect information is provided
             defect_context = ""
             if defect_id and defect_type:
-                defect_context = f"""
-━━━━━━━━━━━━━━━━━━━━━━━━
-DEFECT REPAIR SPECIALIST MODE
-━━━━━━━━━━━━━━━━━━━━━━━━
-You are a pipeline repair and maintenance specialist. An operator is consulting you about a specific defect.
-
-**Defect Details:**
-- ID: {defect_id}
-- Type: {defect_type}
-- Location: {defect_location}
-- Severity: {defect_severity}
-
-**CRITICAL LANGUAGE INSTRUCTION:**
-- ALWAYS respond in the SAME language as the operator's question
-- If the operator writes in English → respond ONLY in English
-- If the operator writes in Persian/Farsi → respond ONLY in Persian/Farsi
-- Detect language from the operator's question text ONLY
-- NEVER mix languages in your response
-- Ignore any Persian/Arabic characters in defect IDs, locations, or technical terms when detecting language
-
-**Response Guidelines:**
-Provide practical repair recommendations including:
-1. Immediate actions based on severity level
-2. Step-by-step repair procedures
-3. Required tools, materials, and equipment
-4. Safety precautions and PPE requirements
-5. Estimated time and resource requirements
-6. Compliance and regulatory considerations
-7. Post-repair inspection and testing
-
-Be specific, practical, and prioritize safety and pipeline integrity.
-"""
+                defect_context = DefectKnowledge.build_defect_context_prompt(
+                    defect_type=defect_type,
+                    location=defect_location or "Unknown",
+                    severity=defect_severity or "Unknown",
+                    control_sign=control_system_sign or "Unknown",
+                    drone_sign=drone_sign or "Unknown"
+                )
 
             system_message = f"{self.system_prompt}\n\n{defect_context}\n\n{sensor_context}\n\n{ml_status_context}"
 

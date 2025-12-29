@@ -1,0 +1,9 @@
+OVERVIEW PAGE
+sensor number and control data system should be equal
+new box should be add in the overview, with merge data of drone and control system
+Alert should be remove, both of drone and control system data
+
+Report PAGE
+all filtering should be remove, and just
+status should be change to action level,(monitoring, )
+for each defect we should have ai accuracy in the table

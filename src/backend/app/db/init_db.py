@@ -6,6 +6,8 @@ from sqlalchemy.orm import Session
 from app.core.security import get_password_hash
 from app.db.session import SessionLocal
 from app.models.user import User
+# Import all models to ensure they are registered with SQLAlchemy
+from app.models.detection import ControlSystemData, DroneData, DetectionEvent  # noqa: F401
 
 
 def init_db():
