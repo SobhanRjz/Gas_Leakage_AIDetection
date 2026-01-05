@@ -45,6 +45,13 @@ app.add_middleware(
 )
 
 
+# Startup event to ensure init_db runs
+@app.on_event("startup")
+def startup_event():
+    """Ensure database is initialized on startup"""
+    init_db()
+
+
 # Include routers
 app.include_router(auth.router, prefix="/api/auth", tags=["authentication"])
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
