@@ -14,7 +14,7 @@ from app.db.session import SessionLocal
 from app.models.user import User
 
 router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
 
 
 def get_db():
