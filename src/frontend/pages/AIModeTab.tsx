@@ -8,6 +8,7 @@ interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+  showActions?: boolean;
 }
 
 interface AIModeTabProps {}
@@ -171,7 +172,7 @@ const AIModeTab: React.FC<AIModeTabProps> = () => {
 
   return (
     <div className="ai-mode-tab">
-      <div className="ai-container">
+      <div className="page-container">
         <div className="chat-container">
           <div className="messages-container">
             {messages.length === 0 && (

@@ -54,7 +54,7 @@ const LandingPage: React.FC = () => {
       <div className="hero-section">
         <div className="hero-content">
           <h1 className="hero-title">
-            Intelligent Gas Pipeline<br />
+            Intelligent Pipeline Leakage Detection<br />
             Monitoring System
           </h1>
           <p className="hero-subtitle">

@@ -10,7 +10,7 @@ const AboutPage: React.FC = () => {
 
   return (
     <div className={`about-page ${isDarkTheme ? 'theme-dark' : 'theme-light'}`}>
-      <div className="about-container">
+      <div className="page-container">
         {/* Hero Section */}
         <section className="about-hero">
           <h1 className="hero-title">AI-Powered Pipeline Monitoring System</h1>

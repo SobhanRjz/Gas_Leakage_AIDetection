@@ -255,3 +255,44 @@ async def export_drone_csv(
         'message': 'CSV file ready for download'
     }
 
+
+@router.put("/events/{event_id}/status")
+async def update_detection_event_status(
+    event_id: str,
+    status_data: dict[str, str],
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+) -> dict[str, Any]:
+    """
+    Update the status of a detection event
+    """
+    status = status_data.get('status')
+    if not status or status not in ['pending', 'progress', 'resolved']:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid status. Must be one of: pending, progress, resolved"
+        )
+
+    data_service = DataService(db)
+    event = data_service.update_detection_event_status(event_id, status)
+
+    if not event:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Detection event with ID {event_id} not found"
+        )
+
+    return {
+        'id': event.event_id,
+        'defect_type': event.defect_type,
+        'location': event.location,
+        'status': event.status,
+        'risk_level': event.risk_level,
+        'control_system_sign': event.control_system_sign,
+        'control_system_source': event.control_system_source,
+        'drone_sign': event.drone_sign,
+        'drone_source': event.drone_source,
+        'ai_confidence': event.ai_confidence,
+        'detected_date': event.timestamp.isoformat(),
+        'last_detected': event.last_updated.isoformat() if event.last_updated else None
+    }

@@ -225,6 +225,23 @@ class DetectionService {
     const data = await response.json()
     return data.filename
   }
+
+  /**
+   * Update detection event status
+   */
+  async updateDetectionStatus(id: string, status: 'pending' | 'progress' | 'resolved'): Promise<DetectionEvent> {
+    const response = await fetch(`${API_BASE_URL}/events/${id}/status`, {
+      method: 'PUT',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify({ status })
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to update detection status: ${response.statusText}`)
+    }
+
+    return response.json()
+  }
 }
 
 // Export singleton instance

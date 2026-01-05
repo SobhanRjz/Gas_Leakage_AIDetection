@@ -110,7 +110,6 @@ const ReportPage: React.FC = () => {
   const location = useLocation()
   const { isDarkTheme } = React.useContext(ThemeContext)
   const { authState } = useAuth()
-  const [reportType, setReportType] = useState('defects')
   const [dateRange, setDateRange] = useState('30days')
   const [isGenerating, setIsGenerating] = useState(false)
   const [accordionState, setAccordionState] = useState<AccordionState>({
@@ -366,6 +365,47 @@ const ReportPage: React.FC = () => {
     console.log(`Downloading report in ${format} format`)
   }
 
+  const handleStatusChange = async (defectId: string, newStatus: 'pending' | 'progress' | 'resolved') => {
+    try {
+      // Call API to update status
+      await detectionService.updateDetectionStatus(defectId, newStatus)
+
+      // Update local state
+      setDefectRegistry(prevRegistry =>
+        prevRegistry.map(defect =>
+          defect.id === defectId
+            ? { ...defect, status: newStatus }
+            : defect
+        )
+      )
+
+      // Show success toast
+      setToast({
+        show: true,
+        type: 'success',
+        message: 'Status updated successfully',
+        actions: []
+      })
+
+      // Hide toast after 3 seconds
+      setTimeout(() => setToast(null), 3000)
+
+    } catch (error) {
+      console.error('Failed to update status:', error)
+
+      // Show error toast
+      setToast({
+        show: true,
+        type: 'error',
+        message: 'Failed to update status. Please try again.',
+        actions: []
+      })
+
+      // Hide toast after 5 seconds
+      setTimeout(() => setToast(null), 5000)
+    }
+  }
+
   const clearAllFilters = () => {
     setActiveFilters(['All Severity'])
     setSearchTerm('')
@@ -432,14 +472,13 @@ const ReportPage: React.FC = () => {
     ));
   };
 
-  // Dynamic content renderer - render only selected report type
+  // Dynamic content renderer - renders Defect Registry
   const renderReportContent = () => {
     return (
       <div className="accordion-container">
-        {reportType === 'defects' && (
-          <div className="industrial-panel">
-            <div className="panel-header">
-              <h2 className="panel-title">Defects Registry</h2>
+        <div className="industrial-panel">
+          <div className="panel-header">
+            <h2 className="panel-title">Defect Registry</h2>
               <div className="panel-header-info">
                 <span className="info-badge new-badge">
                   {sortedDefectRegistry.filter(d => d.lastDetected !== undefined).length} Just Detected
@@ -526,10 +565,16 @@ const ReportPage: React.FC = () => {
                             </div>
                           </td>
                           <td>
-                            <span className={`status-badge ${defect.status}`}>
-                              {defect.status === 'pending' ? 'Pending' : 
-                               defect.status === 'progress' ? 'In Progress' : 'Resolved'}
-                            </span>
+                            <select
+                              className={`status-select ${defect.status}`}
+                              value={defect.status}
+                              onChange={(e) => handleStatusChange(defect.id, e.target.value as 'pending' | 'progress' | 'resolved')}
+                              title="Change defect status"
+                            >
+                              <option value="pending">Pending</option>
+                              <option value="progress">In Progress</option>
+                              <option value="resolved">Resolved</option>
+                            </select>
                           </td>
                           <td>
                             <button
@@ -557,7 +602,6 @@ const ReportPage: React.FC = () => {
               </div>
             </div>
           </div>
-        )}
       </div>
     );
   }
@@ -567,7 +611,7 @@ const ReportPage: React.FC = () => {
       {/* Header Layer */}
       <header className="report-sticky-header">
         <div className="report-header-content">
-          <h1 id="main-heading" className="report-page-title">Reports</h1>
+          <h1 id="main-heading" className="report-page-title">Defect Registry</h1>
           <div className="report-header-actions">
             <button className="action-btn secondary" onClick={() => navigate('/overview')}>
               Overview
@@ -617,26 +661,18 @@ const ReportPage: React.FC = () => {
       </header>
 
       {/* Content Wrapper Layer */}
-      <div className="report-content-wrapper">
-        {/* Sidebar Layer */}
-        <aside className="report-config-sidebar">
-      <div className="industrial-panel">
-        <div className="panel-header">
-          <h2 className="panel-title">Report Configuration</h2>
-        </div>
-        <div className="panel-content">
-          <div className="config-grid">
-                <div className="config-section">
-                  <div className="config-section-title">Report Type</div>
-                  <select
-                    id="report-type"
-                    value={reportType}
-                    onChange={(e) => setReportType(e.target.value)}
-                    className="enhanced-select"
-                  >
-                    <option value="defects">Defects Registry</option>
-                  </select>
-                </div>
+      <div className="page-container">
+        <div className="report-content-wrapper">
+
+        {/* Main View Layer */}
+        <main className="report-main-view">
+          {/* Report Configuration Panel - Moved to top */}
+          <div className="industrial-panel report-config-panel">
+            <div className="panel-header">
+              <h2 className="panel-title">Report Configuration</h2>
+            </div>
+            <div className="panel-content">
+              <div className="config-grid">
 
                 <div className="config-section">
                   <div className="config-section-title">Date Range</div>
@@ -726,26 +762,9 @@ const ReportPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </aside>
 
-        {/* Main View Layer */}
-        <main className="report-main-view">
           {/* Sensor Legend */}
           <div className="sensor-legend">
-            <div className="legend-header">
-              <div className="legend-title">
-                <span>📊</span>
-                Legend • Sensor Types
-              </div>
-              <button
-                className={`legend-toggle ${legendExpanded ? 'expanded' : ''}`}
-                onClick={() => setLegendExpanded(!legendExpanded)}
-                aria-label="Toggle sensor legend"
-                aria-expanded={legendExpanded}
-              >
-                <ChevronDown size={14} />
-              </button>
-            </div>
             {legendExpanded && (
               <div className="legend-badges">
                 <span className="sensor-badge" data-type="pt">PT</span>
@@ -760,94 +779,11 @@ const ReportPage: React.FC = () => {
           </div>
 
           {/* Unified Toolbar */}
-          <div className="unified-toolbar">
-            <div className="toolbar-left">
-              <span className="summary-text">
-                {selectedItems.length > 0 ? `${selectedItems.length} selected` : `Showing ${sortedDefectRegistry.length} confirmed defect${sortedDefectRegistry.length !== 1 ? 's' : ''}`}
-              </span>
-              <div className="filter-chips">
-                <button
-                  className={`filter-chip severity-critical ${activeFilters.includes('Critical') ? 'active' : ''}`}
-                  onClick={() => toggleFilter('Critical')}
-                  disabled={selectedItems.length > 0}
-                  aria-pressed={activeFilters.includes('Critical')}
-                  aria-label="Toggle Critical severity filter"
-                >
-                  Critical ({sortedDefectRegistry.filter(d => d.riskLevel === 'critical').length})
-                </button>
-                <button
-                  className={`filter-chip severity-warning ${activeFilters.includes('Warning') ? 'active' : ''}`}
-                  onClick={() => toggleFilter('Warning')}
-                  disabled={selectedItems.length > 0}
-                  aria-pressed={activeFilters.includes('Warning')}
-                  aria-label="Toggle Warning severity filter"
-                >
-                  Medium ({sortedDefectRegistry.filter(d => d.riskLevel === 'warning').length})
-                </button>
-                <button
-                  className={`filter-chip severity-info ${activeFilters.includes('Low') ? 'active' : ''}`}
-                  onClick={() => toggleFilter('Low')}
-                  disabled={selectedItems.length > 0}
-                  aria-pressed={activeFilters.includes('Low')}
-                  aria-label="Toggle Low severity filter"
-                >
-                  Low ({sortedDefectRegistry.filter(d => d.riskLevel === 'low').length})
-                </button>
-              </div>
-            </div>
-            <div className="toolbar-right">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="sort-select"
-                disabled={selectedItems.length > 0}
-              >
-                <option value="date-desc">Sort by: Last Detected (Recently Found First)</option>
-                <option value="date-asc">Sort by: Last Detected (Oldest First)</option>
-                <option value="severity-desc">Sort by: Risk Level (High to Low)</option>
-                <option value="severity-asc">Sort by: Risk Level (Low to High)</option>
-                <option value="confidence-desc">Sort by: AI Confidence (High to Low)</option>
-                <option value="confidence-asc">Sort by: AI Confidence (Low to High)</option>
-              </select>
-              <button
-                className="toolbar-action-btn"
-                onClick={selectAllItems}
-                disabled={selectedItems.length === 0 && false}
-                aria-label="Select all items"
-              >
-                Select All
-              </button>
-              <button
-                className="toolbar-action-btn"
-                onClick={markReviewed}
-                disabled={selectedItems.length === 0}
-                aria-label="Mark selected items as reviewed"
-              >
-                Mark Reviewed
-              </button>
-              <button
-                className="toolbar-action-btn"
-                onClick={exportSelection}
-                disabled={selectedItems.length === 0}
-                aria-label="Export selected items"
-              >
-                Export Selection
-              </button>
-                <button
-                className="toolbar-action-btn"
-                onClick={() => setIsEmpty(!isEmpty)}
-                aria-label="Toggle empty state"
-              >
-                {isEmpty ? 'Show Data' : 'Show Empty'}
-                </button>
-                        </div>
-                      </div>
-
-          {/* Dynamic Report Content */}
           <div className="report-content">
             {renderReportContent()}
-                          </div>
+          </div>
         </main>
+        </div>
       </div>
 
       {/* Toast Notifications */}

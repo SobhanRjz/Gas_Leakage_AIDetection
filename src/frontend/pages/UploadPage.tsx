@@ -121,7 +121,8 @@ const UploadPage: React.FC = () => {
 
   return (
     <div className={`upload-page ${isDarkTheme ? 'theme-dark' : 'theme-light'}`}>
-      <div className="upload-header">
+      <div className="page-container">
+        <div className="upload-header">
         <div className="header-content">
           <h1 className="page-title">AI Analysis Upload</h1>
           <p className="page-subtitle">Upload images and videos for deep learning pipeline defect detection</p>
@@ -238,6 +239,116 @@ const UploadPage: React.FC = () => {
           </div>
         )}
 
+        {/* Template Section - Defect Examples */}
+        <div className="template-section">
+          <div className="template-header">
+            <h2 className="section-title">Detection Examples</h2>
+            <p className="section-subtitle">See what types of defects our AI can identify</p>
+          </div>
+
+          <div className="template-grid">
+            <div className="template-card">
+              <div className="template-image-wrapper">
+                <div className="template-image">
+                  <div className="template-placeholder">
+                    <span className="template-text">Sample Image</span>
+                  </div>
+                  <div className="template-badge critical">
+                    <span className="badge-icon">⚠️</span>
+                    <span className="badge-text">High Risk</span>
+                  </div>
+                </div>
+              </div>
+              <div className="template-info">
+                <div className="template-icon-header">
+                  <div className="template-icon gas-leak">💨</div>
+                  <h4 className="template-title">Gas Leak Detection</h4>
+                </div>
+                <p className="template-description">Identifies visible gas emissions, vapor clouds, and pressure anomalies in pipeline infrastructure</p>
+                <div className="template-features">
+                  <span className="feature-tag">Real-time Detection</span>
+                  <span className="feature-tag">98.5% Accuracy</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="template-card">
+              <div className="template-image-wrapper">
+                <div className="template-image">
+                  <div className="template-placeholder">
+                    <span className="template-text">Sample Image</span>
+                  </div>
+                  <div className="template-badge warning">
+                    <span className="badge-icon">⚡</span>
+                    <span className="badge-text">Medium Risk</span>
+                  </div>
+                </div>
+              </div>
+              <div className="template-info">
+                <div className="template-icon-header">
+                  <div className="template-icon corrosion">🏭</div>
+                  <h4 className="template-title">Corrosion Analysis</h4>
+                </div>
+                <p className="template-description">Detects rust, metal degradation, and structural wear on pipeline surfaces and joints</p>
+                <div className="template-features">
+                  <span className="feature-tag">Deep Learning</span>
+                  <span className="feature-tag">Multi-angle</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="template-card">
+              <div className="template-image-wrapper">
+                <div className="template-image">
+                  <div className="template-placeholder">
+                    <span className="template-text">Sample Image</span>
+                  </div>
+                  <div className="template-badge critical">
+                    <span className="badge-icon">⚠️</span>
+                    <span className="badge-text">High Risk</span>
+                  </div>
+                </div>
+              </div>
+              <div className="template-info">
+                <div className="template-icon-header">
+                  <div className="template-icon crack">⚡</div>
+                  <h4 className="template-title">Structural Cracks</h4>
+                </div>
+                <p className="template-description">Identifies fractures, weld failures, and mechanical damage in critical infrastructure</p>
+                <div className="template-features">
+                  <span className="feature-tag">Precision Scan</span>
+                  <span className="feature-tag">Micro-defect</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="template-card">
+              <div className="template-image-wrapper">
+                <div className="template-image">
+                  <div className="template-placeholder">
+                    <span className="template-text">Sample Image</span>
+                  </div>
+                  <div className="template-badge info">
+                    <span className="badge-icon">🔧</span>
+                    <span className="badge-text">Low Risk</span>
+                  </div>
+                </div>
+              </div>
+              <div className="template-info">
+                <div className="template-icon-header">
+                  <div className="template-icon equipment">🔧</div>
+                  <h4 className="template-title">Equipment Issues</h4>
+                </div>
+                <p className="template-description">Detects valve problems, sensor failures, and equipment malfunctions across systems</p>
+                <div className="template-features">
+                  <span className="feature-tag">IoT Integrated</span>
+                  <span className="feature-tag">Predictive</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="info-section">
           <div className="info-card">
             <div className="info-icon">🤖</div>
@@ -255,6 +366,7 @@ const UploadPage: React.FC = () => {
             <p className="info-text">Your data is encrypted and processed securely with enterprise-grade security protocols</p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )

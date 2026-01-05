@@ -201,17 +201,14 @@ const OverviewPage: React.FC = () => {
 
   return (
     <div className={`overview-page ${isDarkTheme ? 'theme-dark' : 'theme-light'}`}>
-      {/* Page Header */}
-      <div className="page-header">
+      <div className="page-container">
+        {/* Page Header */}
+        <div className="page-header">
         <div className="header-left">
           <h1 className="page-title">Pipeline Monitoring Dashboard</h1>
           <p className="page-subtitle">Real-time surveillance and defect detection system</p>
         </div>
         <div className="header-right">
-          <div className="time-display">
-            <span className="time-label">Last Updated</span>
-            <span className="time-value">{currentTime.toLocaleTimeString()}</span>
-          </div>
           <button className="quick-action-btn upload" onClick={() => navigate('/upload')}>
             📤 Upload Media
           </button>
@@ -229,9 +226,6 @@ const OverviewPage: React.FC = () => {
         <div className="system-actions">
           <button className="action-btn" onClick={handleRefreshStatus}>
             Refresh Status
-          </button>
-          <button className="action-btn" onClick={handleSimulateDetection}>
-            Simulate Detection
           </button>
           <button className="action-btn primary" onClick={() => navigate('/reports')}>
             Reports
@@ -251,24 +245,18 @@ const OverviewPage: React.FC = () => {
             <div className="kpi-value-display">{leakageStatus.totalLeakages}</div>
             <div className="kpi-label-text">Active Leaks</div>
           </div>
-          <svg className="kpi-trend" viewBox="0 0 100 32" preserveAspectRatio="none">
-            <path d="M0 28 L20 24 L40 26 L60 18 L80 22 L100 16" stroke={leakageStatus.totalLeakages > 0 ? "#ff4757" : "#1dd1a1"} strokeWidth="2" fill="none" opacity="0.5"/>
-          </svg>
         </div>
 
         {/* Detection Accuracy */}
         <div className="kpi-panel success">
           <div className="kpi-header">
             <span className="kpi-icon">🎯</span>
-            <span className="kpi-status-badge">Optimal</span>
+            <span className="kpi-status-badge">Normal</span>
           </div>
           <div className="kpi-data">
             <div className="kpi-value-display">98.5%</div>
             <div className="kpi-label-text">AI Accuracy</div>
           </div>
-          <svg className="kpi-trend" viewBox="0 0 100 32" preserveAspectRatio="none">
-            <path d="M0 20 L20 18 L40 19 L60 16 L80 15 L100 14" stroke="#1dd1a1" strokeWidth="2" fill="none" opacity="0.5"/>
-          </svg>
         </div>
 
         {/* Pipeline Pressure */}
@@ -281,9 +269,6 @@ const OverviewPage: React.FC = () => {
             <div className="kpi-value-display">45.2</div>
             <div className="kpi-label-text">Pressure (PSI)</div>
           </div>
-          <svg className="kpi-trend" viewBox="0 0 100 32" preserveAspectRatio="none">
-            <path d="M0 16 L20 18 L40 14 L60 20 L80 16 L100 18" stroke="#ffb020" strokeWidth="2" fill="none" opacity="0.5"/>
-          </svg>
         </div> */}
 
         {/* Flow Rate */}
@@ -296,9 +281,6 @@ const OverviewPage: React.FC = () => {
             <div className="kpi-value-display">1,247</div>
             <div className="kpi-label-text">Flow (m³/h)</div>
           </div>
-          <svg className="kpi-trend" viewBox="0 0 100 32" preserveAspectRatio="none">
-            <path d="M0 18 L20 16 L40 17 L60 15 L80 16 L100 14" stroke="#00d4ff" strokeWidth="2" fill="none" opacity="0.5"/>
-          </svg>
         </div> */}
 
         {/* Sensor Network */}
@@ -311,9 +293,6 @@ const OverviewPage: React.FC = () => {
             <div className="kpi-value-display">156 / 160</div>
             <div className="kpi-label-text">Sensors Online</div>
           </div>
-          <svg className="kpi-trend" viewBox="0 0 100 32" preserveAspectRatio="none">
-            <path d="M0 20 L20 20 L40 19 L60 20 L80 20 L100 19" stroke="#a463f2" strokeWidth="2" fill="none" opacity="0.5"/>
-          </svg>
         </div>
       </div>
 
@@ -333,6 +312,7 @@ const OverviewPage: React.FC = () => {
                   const hasCritical = risks.some(r => r.level === 'critical')
                   const hasWarning = risks.some(r => r.level === 'warning')
                   const highestRisk = hasCritical ? risks.find(r => r.level === 'critical') : hasWarning ? risks.find(r => r.level === 'warning') : risks[0]
+                  return null // Not currently used in UI
                 })()}
               </>
             )}
@@ -402,6 +382,7 @@ const OverviewPage: React.FC = () => {
                   const hasCritical = risks.some(r => r.level === 'critical')
                   const hasWarning = risks.some(r => r.level === 'warning')
                   const highestRisk = hasCritical ? risks.find(r => r.level === 'critical') : hasWarning ? risks.find(r => r.level === 'warning') : risks[0]
+                  return null // Not currently used in UI
                 })()}
               </>
             )}
@@ -739,6 +720,7 @@ const OverviewPage: React.FC = () => {
 
           </div>
         </div>
+      </div>
       </div>
     </div>
   )

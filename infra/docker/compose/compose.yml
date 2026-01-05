@@ -15,7 +15,7 @@ services:
       # Security settings
       - SECRET_KEY=your-secret-key-change-in-production-replace-with-random-string
       - ALGORITHM=HS256
-      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - ACCESS_TOKEN_EXPIRE_MINUTES=2880 # 2 days
       # OpenAI settings
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - OPENAI_MODEL=gpt-4.1-nano

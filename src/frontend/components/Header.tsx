@@ -74,8 +74,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
       <div className="header-container modern">
         {/* Left: Brand */}
         <Link to="/" className="brand">
-          <img src={`${import.meta.env.VITE_BASE || '/'}Logo.jpg`} alt="Gas Pipeline Monitor" />
-          <span className="brand-name">Pipeline Monitor</span>
+          <img src={`${(import.meta as any).env?.VITE_BASE || '/'}LOGO-en.png`} alt="Gas Pipeline Monitor" />
         </Link>
 
         {/* Center: Primary nav */}

@@ -457,7 +457,7 @@
   .report-content-wrapper {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    padding: 0 1.25rem 1.5rem;
+    padding: 1.5rem 1.25rem 1.5rem;
   }
 
   .report-config-sidebar {
@@ -587,8 +587,17 @@
 
   /* Content wrapper */
   .report-content-wrapper {
-    padding: 0 1rem 1rem;
+    padding: 1rem 1rem 1rem;
     gap: 1rem;
+  }
+  
+  /* Ensure panel content has proper padding on mobile */
+  .report-content .panel-content {
+    padding: 1.5rem 1rem;
+  }
+  
+  .report-content .panel-header {
+    padding: 1.25rem 1rem 1rem;
   }
 
   .report-config-sidebar {
@@ -607,23 +616,50 @@
     gap: 0.75rem;
   }
 
-  /* Table improvements for mobile */
+  /* Table improvements for mobile - Ensure horizontal scroll */
   .data-table-container {
     font-size: 0.8125rem;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    /* Show scroll hint on mobile */
+    position: relative;
+  }
+  
+  .data-table-container::after {
+    content: '← Scroll to see more →';
+    position: sticky;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    background: linear-gradient(180deg, transparent 0%, var(--color-brand) 100%);
+    color: white;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-align: center;
+    pointer-events: none;
+    border-radius: 0 0 10px 10px;
+    z-index: 5;
+  }
+  
+  .data-table {
+    min-width: 900px; /* Reduced min-width for mobile */
   }
 
   .data-table th,
   .data-table td {
-    padding: 0.875rem 1rem;
+    padding: 0.75rem 0.875rem;
     font-size: 0.8125rem;
   }
 
   .data-table th {
     font-size: 0.6875rem;
     letter-spacing: 0.06em;
+    padding: 0.875rem 0.875rem;
   }
 
   /* Defect type cell - Stack on mobile */

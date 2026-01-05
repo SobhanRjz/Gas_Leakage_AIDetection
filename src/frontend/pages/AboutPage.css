@@ -37,11 +37,7 @@
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-.about-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 2rem 4rem;
-}
+/* About page uses standard page-container from Layout.css */
 
 /* =================================================================
    HERO SECTION

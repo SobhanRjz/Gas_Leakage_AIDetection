@@ -35,12 +35,6 @@
   align-items: center;
 }
 
-.brand img {
-  width: 28px;
-  height: 28px;
-  object-fit: cover;
-  border-radius: 50%;
-}
 
 .brand-name {
   font-weight: 700;
@@ -213,21 +207,15 @@
 }
 
 .brand:hover { 
-  opacity: 0.9;
   transform: translateX(3px);
 }
 
 .brand img {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  width: 100px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .brand:hover img {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.15);
   transform: scale(1.05);
 }
 
@@ -265,7 +253,6 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 11px;
   letter-spacing: -0.01em;
-  color: rgba(255, 255, 255, 0.75);
 }
 
 .nav-link:hover {
@@ -457,10 +444,6 @@
     display: none;
   }
   
-  .brand img {
-    width: 32px;
-    height: 32px;
-  }
   
   .brand-name {
     font-size: 1rem;

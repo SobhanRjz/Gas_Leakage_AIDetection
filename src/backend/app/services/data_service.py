@@ -375,12 +375,38 @@ class DataService:
         self.db.commit()
         return events
     
+    def update_detection_event_status(self, event_id: str, status: str) -> Optional[DetectionEvent]:
+        """Update the status of a detection event"""
+        event = self.db.query(DetectionEvent).filter(
+            DetectionEvent.event_id == event_id
+        ).first()
+
+        if not event:
+            return None
+
+        # Update status
+        event.status = status
+
+        # Set resolved_date if status is 'resolved'
+        if status == 'resolved':
+            event.resolved_date = datetime.utcnow()
+        elif status in ['pending', 'progress']:
+            event.resolved_date = None
+
+        # Update last_updated timestamp
+        event.last_updated = datetime.utcnow()
+
+        self.db.commit()
+        self.db.refresh(event)
+
+        return event
+
     def get_recent_detection_events(self, limit: int = 15) -> List[Dict[str, Any]]:
         """Get recent detection events"""
         events = self.db.query(DetectionEvent).order_by(
             DetectionEvent.last_updated.desc()
         ).limit(limit).all()
-        
+
         return [
             {
                 'id': event.event_id,
